@@ -1,5 +1,5 @@
 # Dependencies
-markdown:         maruku # kramdown
+markdown:         kramdown
 kramdown:
   extensions: ["tables"]
 
