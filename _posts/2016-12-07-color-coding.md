@@ -6,11 +6,7 @@ redirect_from: "/2016/12/07/color_coding/"
 permalink: color-coding
 ---
 
-There is a very simple
-{% raw %}
-$$O^*(2^n)$$
-{% endraw %}
-(the $$O^*$$ notation suppresses polynomial factors) dynamique programming algorithm from the 70ties by Micheal Held and Richard Karp that solves the hamiltonian cycle problem. It was for a long time an open problem if one could solve the k-path problem in $$O^*(2^k)$$. There now exists algorithms that actually beat this running time (\[[Williams2009](https://arxiv.org/abs/0807.3026)\],\[[Bjorklund2010](https://arxiv.org/abs/1007.1161)\]).
+There is a very simple $$O^*(2^n)$$ (the $$O^*$$ notation suppresses polynomial factors) dynamique programming algorithm from the 70ties by Micheal Held and Richard Karp that solves the hamiltonian cycle problem. It was for a long time an open problem if one could solve the k-path problem in $$O^*(2^k)$$. There now exists algorithms that actually beat this running time (\[[Williams2009](https://arxiv.org/abs/0807.3026)\],\[[Bjorklund2010](https://arxiv.org/abs/1007.1161)\]).
 
 I want to focus here on a technique called Color Coding developed by Alon et al. \[[Alon94](http://www.math.tau.ac.il/~nogaa/PDFS/col5.pdf)\] in '94. It was the first time that the k-path problem was solved in $$O^*(c^k)$$ for some constant $$c$$. The technique is simple but very beautiful and can also be applied to other subgraph problems.
 
