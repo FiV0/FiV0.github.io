@@ -34,6 +34,7 @@ $$
 \end{alignat*}
 $$
 
+As one has to iterate over all the subsets of $$S$$ for each state the running time of the dynamic programming algorithm is $$O(k^22^{2k}nm)$$ in this case.
 It should be noted that the above technique can be derandomized by constructing a family of functions $$\mathcal{F}$$ from  $$[n]$$ to $$[k]$$ , such that for every $$S \in { {[n]}\choose{k} }$$ there exists a fucntion $$f \in \mathcal{F}$$ that is injective on $$S$$.
 
 There is a very nice chapter about randomized methods like the above in the book *Parameterized Algorithms* by Cygan et al. \[[Cygan2015](http://parameterized-algorithms.mimuw.edu.pl/)\] from which this posed is inspired. There is a free version available online if you are interested.
