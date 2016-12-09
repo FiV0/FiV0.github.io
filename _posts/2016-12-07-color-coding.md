@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Color Coding
-comments: true
+comments: false
 redirect_from: "/2016/12/07/color_coding/"
 permalink: color-coding
 ---
@@ -23,7 +23,7 @@ $$
 \end{alignat*}
 $$
 
-The complexity of the dynamic programming algorithm is $$O(2^knm)$$. One therefore obtains a Monte-Carlo-algorithm for k-path running in $$O((2e)^knm)$$.
+The complexity of the dynamic programming algorithm is $$O(2^kn^2)$$. One therefore obtains a Monte-Carlo-algorithm for k-path running in $$O((2e)^kn^2)$$.
 
 The same can be applied to k-trees. The only thing that has to change is the dynamic programming algorithm. For this problem we are given $$G$$ and a tree $$T$$ of size k and the question is if $$G$$ contains $$T$$ as a subgraph (not necessarily induced). We will first root our tree $$T$$ at some arbitrary vertex $$r$$. This gives a unique orientation to every edge. We will denote by $$T^i_k$$ the subtree rooted at $$i$$ with the first $$k$$ children and $$t^i_k$$ the $$k^{th}$$-child of $$i$$. We denote by $$d(i)$$ the number of children of $$i$$ in the rooted tree $$T$$. Let Tree$$(v,S,j,l)$$ be $$True$$ if there exists a copy of $$T^j_l$$ rooted at $$v$$ in $$G$$ using the colors of $$S$$. In particular this implies $$\vert S\vert = \vert T^j_k\vert$$. The recurrence now becomes:
 
@@ -34,7 +34,7 @@ $$
 \end{alignat*}
 $$
 
-As one has to iterate over all the subsets of $$S$$ for each state the running time of the dynamic programming algorithm is $$O(k^22^{2k}nm)$$ in this case.
+As one has to iterate over all the subsets of $$S$$ for each state the running time of the dynamic programming algorithm is $$O(k^22^{2k}n^2)$$ in this case.
 It should be noted that the above technique can be derandomized by constructing a family of functions $$\mathcal{F}$$ from  $$[n]$$ to $$[k]$$ , such that for every $$S \in { {[n]}\choose{k} }$$ there exists a fucntion $$f \in \mathcal{F}$$ that is injective on $$S$$.
 
 There is a very nice chapter about randomized methods like the above in the book *Parameterized Algorithms* by Cygan et al. \[[Cygan2015](http://parameterized-algorithms.mimuw.edu.pl/)\] from which this posed is inspired. There is a free version available online if you are interested.
