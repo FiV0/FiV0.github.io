@@ -11,7 +11,7 @@ This is joint work with [Christoph Dürr](http://www-desir.lip6.fr/~durrc/).
 Let us first define the main problem of this post.
 
 <div class="definition">
-  <i>Excentricity Shortest Path</i>: Given a graph $G$ and two vertices $s$ and $t$, is there a shortest $s-t$ path with eccentricity at most $k$ ?
+  <i>Eccentricity Shortest Path</i>: Given a graph $G$ and two vertices $s$ and $t$, is there a shortest $s-t$ path with eccentricity at most $k$ ?
 </div>
 
 Here the eccentricity of a path is the maximal distance from any vertex to the path. The problem has been studied and most relevant questions have been answered by
