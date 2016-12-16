@@ -11,10 +11,10 @@ This is joint work with [Christoph Dürr](http://www-desir.lip6.fr/~durrc/).
 Let us first define the main problem of this post.
 
 <div class="definition">
-  <i>Excentricity Shortest Path</i>: Given a graph $G$ and two vertices $s$ and $t$, is there a shortest $s-t$ path with excentricity at most $k$ ?
+  <i>Excentricity Shortest Path</i>: Given a graph $G$ and two vertices $s$ and $t$, is there a shortest $s-t$ path with eccentricity at most $k$ ?
 </div>
 
-Here the excentricity of a path is the maximal distance from any vertex to the path. The problem has been studied and most relevant questions have been answered by
+Here the eccentricity of a path is the maximal distance from any vertex to the path. The problem has been studied and most relevant questions have been answered by
 Dragan and Leitert \[[Dragan15_1](https://arxiv.org/abs/1511.05109),[Dragan15_2](http://link.springer.com/chapter/10.1007/978-3-319-21840-3_23)\]. The problem is $$NP$$-complete in the general case, but there is a dynamic programming algorithm running in $$n^{O(k)}$$ for fixed $$k$$.
 A question that remained open was if the $$k$$-Excentricity Shortest Path problem ($$k$$-ESP) becomes fixed parameter tractable when parameterized by $$k$$. A fixed parameter tractable algorithm has running time
 $$ f(k) n^c$$ for some function $$f$$ independent of $$n$$ and some fixed constant $$c$$. We give strong evidence that this is unlikely.
