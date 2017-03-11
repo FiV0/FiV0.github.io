@@ -9,18 +9,9 @@ permalink: linear-time-quadratic-space
 Whenever an algorithm needs some amount of space $S$, the algorithm runs at least in $S$ time because why allocate the space
 if it is not used ? This post tries to show that this is a misconception. My supervisor [Michel Habib](https://www.irif.fr/~habib/) showed me the following neat little trick recently.
 
-Consider as an example the function
-```
-malloc()
-```
-which allocates a certain amount of space without initializing it (contrary to
-```
-calloc()
-```
-). Depending on the current state of the memory manager and the implementation, a call to
-```
-malloc()
-```
+Consider as an example the functioni```malloc()```
+which allocates a certain amount of space without initializing it (contrary to ```calloc()``).
+Depending on the current state of the memory manager and the implementation, a call t ```malloc()```
 could therefore be contant. Simplifying a lot of things, one could tell the memory manager the beginning and the end of the momory block used.
 
 Whenever a graph algorithm wants to check in constant time if an edge exists, it usually needs to create the whole adjacency matrix. In the following we show that this is not strictly necessary. Let $G$ be a griven graph.
