@@ -1,0 +1,26 @@
+\documentclass[tikz]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{topaths,calc}
+
+\begin{document}
+
+
+\begin{tikzpicture}
+   \draw (0,0) -- (4,0) -- (4,4) -- (0,4) -- (0,0);
+   \draw (-4,-1) -- (-3,-1) -- (-3,3) -- (-4,3) -- (-4,-1);
+   \draw (1.4,1.9) -- (1.6,1.9) -- (1.6,2.1) -- (1.4,2.1) -- (1.4,1.9);
+   \draw (-4,-0.66) -- (-3,-0.66);
+   \draw (-4,-0.33) -- (-3,-0.33);
+   \node (e) at (-3.5,4) {$E$};
+   \node (m) at (2,5) {$M$};
+   \node (ij) at (-3.5,-0.84) {$(i$ $j)$};
+   \node (i) at (-0.33,2) {$i$};
+   \node (i) at (1.5,4.33) {$j$};
+   \node (mij) at (1.5,2) {};
+   \node () at (-3.5,1.5) {$\vdots$};
+   \draw[thick,->] (ij) to [bend right=30] (mij) node[anchor=south east] {};
+   \draw[thick,->] (mij) to [bend right=30] (ij) node[anchor=south east] {};
+\end{tikzpicture}
+
+\end{document}
