@@ -10,7 +10,8 @@ Whenever an algorithm needs some amount of space $S$, the algorithm runs at leas
 if it is not used ? This post tries to show that this is a misconception. My supervisor [Michel Habib](https://www.irif.fr/~habib/) showed me the following neat little trick recently.
 
 Consider as an example the function `malloc()`
-which allocates a certain amount of space without initializing it (contrary to `calloc()`).
+which allocates a certain amount of space without initializing it (contrary to `calloc()`
+).
 Depending on the current state of the memory manager and the implementation, a call to `malloc()`
 could therefore be contant. Simplifying a lot of things, one could tell the memory manager the beginning and the end of the momory block used.
 
