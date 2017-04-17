@@ -1,7 +1,7 @@
 ---
 layout: post
 title: $W[2]$-hardness of $k$-ESP
-comments: false
+comments: true
 redirect_from: "/2016/12/16/w2_hardness_k_ESP/"
 permalink: w2-hardness-k-ESP
 ---

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Bootstrap Percolation
-comments: false
+comments: true
 redirect_from: "/2016/12/07/bootstrap_percolation/"
 permalink: boostrap-percolation
 ---

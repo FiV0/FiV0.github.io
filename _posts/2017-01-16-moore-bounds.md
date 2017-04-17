@@ -1,7 +1,7 @@
 ---
 layout: post
 title: The Moore Bounds
-comments: false
+comments: true
 redirect_from: "/2017/01/16/moore_bounds/"
 permalink: moore-bounds
 ---

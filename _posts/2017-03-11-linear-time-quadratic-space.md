@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Linear Time, Quadratic Space
-comments: false
+comments: true
 redirect_from: "/2017/03/11/linear_time_quadratic_space/"
 permalink: linear-time-quadratic-space
 ---

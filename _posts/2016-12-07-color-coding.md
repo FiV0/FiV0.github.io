@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Color Coding
-comments: false
+comments: true
 redirect_from: "/2016/12/07/color_coding/"
 permalink: color-coding
 ---
