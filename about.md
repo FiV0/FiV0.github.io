@@ -3,7 +3,7 @@ layout: page
 title: About
 ---
 
-My name is Finn Völkel and I am PhD student in the [IRIF](https://www.irif.fr/) laboratory at [Paris 7](http://www.univ-paris-diderot.fr/sc/site.php?bc=accueil&np=accueil).
+My name is Finn Völkel and I am a PhD student in the [IRIF](https://www.irif.fr/) laboratory at [Paris 7](http://www.univ-paris-diderot.fr/sc/site.php?bc=accueil&np=accueil).
 My supervisors are [Michel Habib](https://www.irif.fr/~habib/) and [Christoph Dürr](http://www-desir.lip6.fr/~durrc/).
 This blog is mainly about algorithms, graph theory and programming. I use it to ramble about things I am interested in or want to share some thoughts on.
 
