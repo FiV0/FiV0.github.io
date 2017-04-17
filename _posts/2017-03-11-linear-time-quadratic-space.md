@@ -6,8 +6,8 @@ redirect_from: "/2017/03/11/linear_time_quadratic_space/"
 permalink: linear-time-quadratic-space
 ---
 
-Whenever an algorithm needs some amount of space $S$, the algorithm runs at least in $S$ time because why allocate the space
-if it is not used ? This post tries to show that this is a misconception. My supervisor [Michel Habib](https://www.irif.fr/~habib/) showed me the following neat little trick recently.
+Whenever an algorithm needs some amount of space $S$, the algorithm runs at least in $S$ time, because why would we allocate the space
+if it is not used. This post tries to show that this is a misconception. My supervisor [Michel Habib](https://www.irif.fr/~habib/) showed me the following neat little trick recently.
 
 Consider as an example the function `malloc()`
 which allocates a certain amount of space without initializing it (contrary to `calloc()`
