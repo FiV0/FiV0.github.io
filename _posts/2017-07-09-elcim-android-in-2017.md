@@ -2,7 +2,7 @@
 layout: post
 title: Eclim + Android in 2017
 comments: true
-redirect_from: "/2017/07/08/eclim_android_in_2017/"
+redirect_from: "/2017/07/09/eclim_android_in_2017/"
 permalink: eclim-android-in-2017
 ---
 
