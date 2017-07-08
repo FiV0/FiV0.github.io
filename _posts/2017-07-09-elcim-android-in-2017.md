@@ -31,7 +31,7 @@ all imports. The script is used as follows:
 ```
 ./extract_classes -src /path/to/android/sdk/dir -des /my/dir
 ```
-It recursivly looks at all subdirectories of the specified Android SDK folder until it either finds a JAR file which is Javadoc or Source copies it
+It recursivly looks at all subdirectories of the specified Android SDK folder until it either finds a JAR file which is not Javadoc or Source and copies it
 to the destination directory. If an AAR file is found the content is extracted to a folder of the same name at that location as described in the above answer and
 the JAR file copied afterwards with an appropriate name to the destination directory.
 
