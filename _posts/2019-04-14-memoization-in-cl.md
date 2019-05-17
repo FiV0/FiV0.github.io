@@ -22,7 +22,8 @@ The first thing that comes to mind, is to just wrap the whole function in some s
           (gethash (list ,@args) ,table)
           (if ,found ,val
               (setf (gethash (list ,@args) ,table)
-                    (apply #'(lambda ,args ,@body) (list ,@args)))))))))
+                    (apply #'(lambda ,args ,@body)
+                           (list ,@args)))))))))
 ```
 Our favorite function for the fibonacci sequence would then be defined as:
 ```cl

@@ -40,11 +40,11 @@ Today's post concerns the above macro and the `let*` version of it. Let us first
         `(let (,binding)
            ,@rec))))
 ```
-In `mvlet*` we just pass the list of bindings and the body to `mvlet*-helper` where we then process each binding recursively. The `mvlet*-helper` function could probably be written more  efficiently with tail recursion, but as the code gets expanded before compiling we don't really care. We have two cases when processing a binding of the form `(var form)`. Either the `var` part is a list, in which case we have to use a `multiple-value-bind` in the expansion or it's just a single variable where we place the binding lonely in a let. As a side node, one could have accumulated subsequent single variables and placed them in a single `let*`. The recursive call builds the expansion for the remaining bindings. The awkward looking `(list (mvlet*-helper...` is only there so we can use the splicing for the `body` and don't have to wrap it in a `progn`.
+In `mvlet*` we just pass the list of bindings and the body to `mvlet*-helper` where we then process each binding recursively. The `mvlet*-helper` function could probably be written more  efficiently with tail recursion, but as the code gets expanded before compiling we don't really care. We have two cases when processing a binding of the form `(var form)`. Either the `var` part is a list, in which case we have to use a `multiple-value-bind` in the expansion or it's just a single variable in which case we place the binding in a lonely `let`. As a side node, one could have accumulated subsequent single variables and placed them in a single `let*`. The recursive call builds the expansion for the remaining bindings. The awkward looking `(list (mvlet*-helper...` is only there so we can use the splicing for the `body` and don't have to wrap it in a `progn`.
 
-One thing that I realized aferwards is that `(declare (ignore ...))` statments won't work most of the time as these have to come immediatly after the bindings of `let`/`multiple-value-bind`'s.
+One thing that I realized aferwards is that `(declare (ignore ...))` statments won't work most of the time as these have to come immediatly after the bindings of `let`/`multiple-value-bind`'s. I am not sure how to solve this issue correctly.
 
-Here is the code for the more involved `mvlet:
+What follows is the more involved `mvlet` macro:
 
 ```cl
 (defmacro mvlet ((&rest bindings) &body body)
@@ -97,8 +97,6 @@ Here is the code for the more involved `mvlet:
                                   (cdr forms)))))))
     (helper var-gensyms forms))))
 ```
-There are two helper functions `split-bindings` and `mk-gensym-list`. `split-bindings` just splits the list of bindings into a list of
+There are two helper functions `split-bindings` and `mk-gensym-list`. `split-bindings` just splits the list of bindings of the form `(((var*) init-form)*)` into a list with the `var` forms and a list of `init-form`s. `mk-gensym-list` takes a list and returns a list of the same length with new gensym's. We can't take the same approach for the `mvlet` as we did for the `mvlet*` because when introducing new bindings we might be shadowing variables from the outer scope. We therefore evaluate the `init-form`s first and bind them to newly generated symbols (the reason for the `mk-gensym-list`). Afterwards we just assign the new gensyms one by one to original `var`s and evaluate the body.
 
 I bundled the two macros, plus the macros `mvpsetq`, `mvdo` and `mvdo*` from Paul Graham's book [on lisp](http://www.paulgraham.com/onlisp.html) (I highly recommend this book if you want to really understand what macros are all about) into a small [library](https://github.com/FiV0/cl-mv). I realized only afterwards that people had already written a lot better and more sophisticated versions of the same idea. [Here](http://www.ai.sri.com/~stickel/mvlet.lisp) somebody wrote a lot more sophisticated version where you can specify if the return value is a `list` or comes as `values`. Secondly there is the liberary [metabang-bind](https://common-lisp.net/project/metabang-bind/user-guide.html) which combines even more than just `let` and `multiple-value-bind` into a single form.
-
-
