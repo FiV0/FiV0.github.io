@@ -2,7 +2,7 @@
 layout: post
 title: Multiple value let in Common Lisp
 comments: true
-redirect_from: "/2019/05/16/mvlet/"
+redirect_from: "/2019/05/17/mvlet/"
 
 permalink: mvlet
 ---
