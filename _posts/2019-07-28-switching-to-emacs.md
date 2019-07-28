@@ -15,13 +15,13 @@ Clojure(script) and the option to go for seemed [CIDER](https://cider.readthedoc
 
 The equivalent of the `.vimrc` file is the `.emacs` file (sometimes also `init.el`). Vanilla emacs has some packages available from the GNU package repository, but most emacs packages are available through the 
 [MELPA](https://melpa.org/#/) package archive. Add the following lines to your configuration file to enable the later.
-```el
+```elisp
 (require 'package)
 (add-to-list 'package-archives
 	     '("melpa" . "https://melpa.org/packages/"))
 ```
 To install packages you can type `M-x list-packages RET` and select the ones you are interested in. It follows some non plugin related setup:
-```el
+```elisp
 ;; save auto-save and backup files somewhere else
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
@@ -44,7 +44,7 @@ To install packages you can type `M-x list-packages RET` and select the ones you
 I started off by installing [evil](https://github.com/emacs-evil/evil), a plugin that tries to emulate vim keybindings in emacs. I was supprised how well everything worked out of the box. Even stuff like saving, searching and navigating directories worked instantly with 
 the same keybindings as in vim. An option I had to enable explicitly was screen scrolling with `C-u` (be aware that this might cripple the keymap for other plugins, as `C-u` seems to be a commonly used mapping).
 The second non-standard option I used was allowing tabs in `evil-mode`. The whole setup:
-```el
+```elisp
 ;; Evil mode
 (setq evil-want-C-u-scroll t)
 (add-to-list 'load-path "~/.emacs.d/evil")
@@ -58,7 +58,7 @@ The second non-standard option I used was allowing tabs in `evil-mode`. The whol
 ```
 The next plugin I installed was [evil-nerd-commenter](https://github.com/redguardtoo/evil-nerd-commenter) together with [evil-leader](https://github.com/cofi/evil-leader). Nerdcommenter is originally a vim plugin for easy (un)commenting in all kinds of programming languages. `evil-nerd-commenter` is the port to emacs.
 `evil-leader` is a plugin that lets you emulate the leader key from vim. As I wanted to have the same keybindings as in my vim setup, I needed the leader key customization option. 
-```el
+```elisp
 ;; leader mode
 (global-evil-leader-mode)
 (evil-leader/set-leader ",")
@@ -81,7 +81,7 @@ As `paredit` is not tailored to work together with `evil`, one also needs [evil-
 For better code readability one needs [rainbow-parentheses](https://github.com/Fanael/rainbow-delimiters) which colors matching parentheses differently. These plugins are not useful in every buffer. Emacs has the option to set so
 called hooks for buffer customization. Hooks call a set of functions on well defined occasions. 
 In this case we want to enable certain kinds of plugins when editing lisp files. An example of a hook is
-```el
+```elisp
 (add-hook 'lisp-mode-hook  #'enable-paredit-mode)
 ```
 which enables `paredit-mode` whenever opening a lisp buffer. See my [.emacs](https://github.com/FiV0/dotfiles-tower/blob/master/.emacs#L113) for more hooks.
@@ -89,7 +89,7 @@ which enables `paredit-mode` whenever opening a lisp buffer. See my [.emacs](htt
 Another plugin I use and which was ported from vim is [evil-surround](https://github.com/emacs-evil/evil-surround). 
 It lets you easily enclose previously written code/text in parentheses or quotes. One has to set some
 custom options so that `evil-surround` and `paredit` work seamlessly together. 
-```el
+```elisp
 ;; evil-surround
 (use-package evil-surround
   :ensure t
@@ -103,7 +103,7 @@ custom options so that `evil-surround` and `paredit` work seamlessly together.
 ```
 
 For code completion I use the [company](http://company-mode.github.io/) plugin together with [company-quickhelp](https://github.com/expez/company-quickhelp) which gives you documentation for the current selected completion.
-```el
+```elisp
 ;; company-mode in all buffers
 (add-hook 'after-init-hook 'global-company-mode)
 (global-set-key "\t" 'company-complete-common)
@@ -114,7 +114,7 @@ For code completion I use the [company](http://company-mode.github.io/) plugin t
 ```
 As already mentioned, I am using (or rather trying to use) Cider for Clojure(script). I won't go into the details of the cider environment setup for REPL-driven development. Enough content for another post. The only option I enabled
 via emacs was the direct documentation lookup.
-```el
+```elisp
 ;; cider stuff
 (setq cider-prompt-for-symbol nil)
 ```
@@ -122,7 +122,7 @@ via emacs was the direct documentation lookup.
 adding `slime-company` to `slime-contribs`. `slime-company` then becomes the primary completion engine once slime starts.
 This can be a bit annoying because local buffer variables are no longer completed. The solution is to have grouped 
 company backend, i.e. check multiple company backends for completion candidates.
-```el
+```elisp
 ;; slime stuff
 (setq inferior-lisp-program "/usr/bin/sbcl")
 (setq slime-contribs '(slime-fancy slime-company))
