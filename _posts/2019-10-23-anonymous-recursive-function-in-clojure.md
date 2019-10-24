@@ -6,10 +6,10 @@ redirect_from: "/2019/10/23/anonymous-recursive-function-in-clojure/"
 permalink: anon-rec-function
 ---
 
-I was recently doing some problems on [4Clojure](http://www.4clojure.com/) (a site for learning clojure by doing problems). 
-Mainly to get used to the syntax of Clojure. The problems are most of the time not really difficult, but just try to teach
+I was recently doing some problems on [4Clojure](http://www.4clojure.com/) (a site for learning Clojure by solving problems), 
+mainly to get used to the syntax of Clojure. The problems are most of the time not really difficult but just try to teach
 you something about the core language features and how to apply them. One of the problems was to calculate the 
-[levenshtein](https://en.wikipedia.org/wiki/Levenshtein_distance). 
+[levenshtein](https://en.wikipedia.org/wiki/Levenshtein_distance) distance. 
 As Clojure has a build-in [memoization](http://finnvolkel.com/memoization) function one can implement the straightforward 
 recurrence using `memoize`.
 ```clj
@@ -28,9 +28,9 @@ I think this is some very clean code one can easily reason about. Maybe the memo
 but in terms of simplicity this seems hard to beat. The problem is that 4Clojure doesn't allow `def` for security reasons. So I was 
 wondering if one could write an anonymous recursive function while using the standard `memoize` function. Once you try this you
 quickly realize that you somehow want to refer to the memoized function and it feels like you need some kind of `def` or `defmacro`.
-I ask on the clojurians slack, as I didn't see any solution to the problem, and someone pointed me to 
+I asked on the clojurians slack, as I didn't see any solution to the problem, and someone pointed me to 
 [this](https://stackoverflow.com/questions/3906831/how-do-i-generate-memoized-recursive-functions-in-clojure/13123571#13123571) 
-Stackoverflow question. The trick is to create an anonymous function that takes itself as first argument.
+Stackoverflow anwser. The trick is to create an anonymous function that takes itself as first argument.
 ```clj
 ((let [levenshtein
        (fn [mem-fn x y]
@@ -69,8 +69,8 @@ One can also write a little macro that allows the memoization of lambdas (courte
                       ~@(drop 3 lambda))))]
      (partial mem-fn# mem-fn#)))
 ```
-The macro does all of the transformations for you that we did explicitly above. One can then write the `levenshtein` function really 
-simple again.
+The macro does all of the transformations for you that we did explicitly above. We can then write the `levenshtein` function 
+as anonymous lambda really simple again.
 ```clj
 ((lambda/memoize
   (fn lev [x y]
@@ -83,4 +83,4 @@ simple again.
                  (inc (lev (.substring x 1) y))))))
  "gaattctaatctc" "caaacaaaaaattt")
 ```
-This makes use of the standard Clojure lambda syntax where you can name lambdas.
+This uses standard Clojure lambda syntax where you can name lambdas.
