@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Anonymous recursive function in Clojure 
+title: Recursive memoized lambda in Clojure 
 comments: true
-redirect_from: "/2019/10/23/anonymous-recursive-function-in-clojure/"
-permalink: anon-rec-function
+redirect_from: "/2019/10/23/recursive-memoized-lambda-in-clojure/"
+permalink: rec-mem-lambda
 ---
 
 I was recently doing some problems on [4Clojure](http://www.4clojure.com/) (a site for learning Clojure by solving problems), 
