@@ -87,14 +87,14 @@ This uses standard Clojure lambda syntax where you can name lambdas.
 
 **EDIT**: 31.10.2019
 
-I realized that there is still a method that doesn't use the fixed point combinator, although I think it comes down to same thing, 
-as I am using mutual recursion.
+I realized that there is still a method that doesn't use the fixed point combinator, although I think it comes down to same thing as I am using mutual recursion.
 
 ```clj
 (defmacro memoize {:style/indent 1} [lambda]
   `(let [memoize-identity# (memoize (fn [f#] (memoize f#)))]
      (letfn [(mem-fn# ~(nth lambda 2) ~@(drop 3 lambda))
-             (~(nth lambda 1) [& args#] (apply (memoize-identity# mem-fn#) args#))] 
+             (~(nth lambda 1) [& args#]
+              (apply (memoize-identity# mem-fn#) args#))] 
        ~(nth lambda 1))))
 ```
 
