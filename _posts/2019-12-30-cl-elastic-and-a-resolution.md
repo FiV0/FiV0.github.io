@@ -8,7 +8,7 @@ permalink: elasticsearch-wrapper-in-cl
 
 I wrote a small elasticsearch wrapper called [cl-elastic](https://github.com/FiV0/cl-elastic)
 for Common Lisp. Mainly inspired by 
-[spandex](https://github.com/mpenet/spandex), the idea was to kepp it very simple. No DSL on top of another 
+[spandex](https://github.com/mpenet/spandex), the idea was to keep it very simple. No DSL on top of another 
 DSL, but just a simple REST client wrapper. Elasticsearch also seems to be changing their interface 
 every now and then and that is just annoying when you want to keep up to date with a DSL interface. 
 There are some other clients for elasticsearch that take the DSL approach 
