@@ -10,7 +10,7 @@ I was recently doing some problems on [4Clojure](http://www.4clojure.com/) (a si
 mainly to get used to the syntax of Clojure. The problems are most of the time not really difficult but just try to teach
 you something about the core language features and how to apply them. One of the problems was to calculate the
 [levenshtein](https://en.wikipedia.org/wiki/Levenshtein_distance) distance.
-As Clojure has a build-in [memoization](http://finnvolkel.com/memoization) function one can implement the straightforward
+As Clojure has a build-in [memoization](/memoization) function one can implement the straightforward
 recurrence using `memoize`.
 ```clj
 (def levenshtein
