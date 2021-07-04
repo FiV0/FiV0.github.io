@@ -16,3 +16,4 @@ build the site locally
 ```bash
 bundle exec jekyll serve
 ```
+it then be served under `localhost:4000`.
