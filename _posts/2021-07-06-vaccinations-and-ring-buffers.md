@@ -36,4 +36,4 @@ Here the CS analogy is less obvious, but it could be seen as a sort of streamed
 
 A friend of mine told me afterwards that "it wasn't surprising that me, the _proceduralo_,
 would love the organization" at the center. While leaving I was thinking that this country
-can still do some stuff really great and efficiently. I was definitely hyped for the rest of day.
+can still do some stuff really great and efficiently. I was definitely hyped for the rest of the day.
