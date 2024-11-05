@@ -5,7 +5,6 @@
 }
 
 .github-button {
-    float: right; /* Aligns the button to the right */
     display: inline-flex;
     align-items: center;
     justify-content: center;
