@@ -3,3 +3,23 @@
   margin: 0 auto;
   display: block;
 }
+
+.github-button {
+    float: right; /* Aligns the button to the right */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px; /* Square dimensions */
+    height: 40px;
+    background-color: #24292e;
+    color: #ffffff;
+    border-radius: 5px; /* Set to 0 for sharp edges */
+    text-decoration: none;
+    font-size: 20px;
+    margin: 0; /* Removes any extra spacing */
+    padding: 0; /* Ensures no padding adds to line height */
+}
+
+.github-button:hover {
+    background-color: #333;
+}
