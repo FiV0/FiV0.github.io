@@ -4,22 +4,39 @@
   display: block;
 }
 
-.github-button {
+.social-button {
     float: right; /* Aligns the button to the right */
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 40px; /* Square dimensions */
     height: 40px;
-    background-color: #24292e;
-    color: #ffffff;
+    background-color: #f5f5f5; /* Light gray background */
+    color: #505050; /* Darker gray text for contrast */
+    border: 1px solid #e0e0e0; /* Light border */
     border-radius: 5px; /* Set to 0 for sharp edges */
     text-decoration: none;
     font-size: 20px;
-    margin: 0; /* Removes any extra spacing */
+    margin-left: 8px; /* Space between buttons */
     padding: 0; /* Ensures no padding adds to line height */
+    transition: all 0.2s ease; /* Smooth transition for hover effect */
 }
 
+.social-button:hover {
+    background-color: #e0e0e0; /* Slightly darker on hover */
+    color: #0366d6; /* Blue accent color on hover */
+    text-decoration: none; /* Prevents underlining on hover */
+}
+
+/* Optional: specific brand colors on hover */
 .github-button:hover {
-    background-color: #333;
+    color: #24292e; /* GitHub color */
+}
+
+.twitter-button:hover {
+    color: #1DA1F2; /* Twitter blue */
+}
+
+.bluesky-button:hover {
+    color: #1185FE; /* Bluesky blue */
 }
