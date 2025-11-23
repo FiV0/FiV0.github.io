@@ -8,6 +8,10 @@ installing the dependencies
 ```bash
 gem install jekyll bundler
 ```
+you might need to configure bundler to use your user directory:
+```
+bundle config set --local path 'vendor/bundle'
+```
 installing or updating the gems
 ```bash
 bundle install
