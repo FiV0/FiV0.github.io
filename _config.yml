@@ -2,8 +2,9 @@
 markdown:         kramdown
 kramdown:
   extensions: ["tables"]
+  syntax_highlighter: rouge
 
-highlighter:         true
+highlighter:         rouge
 
 # Permalinks
 permalink:        pretty
