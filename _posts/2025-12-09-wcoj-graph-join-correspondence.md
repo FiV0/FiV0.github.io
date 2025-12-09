@@ -136,7 +136,7 @@ A WCOJ algorithm guarantees that you are not doing worse then the most degenerat
 
 It's unlikely that you search for arbitrary graph patterns in a relational database, but in theory you could and in graph databases it is also way more likely. The TPC-H example shows there are queries that contain cycles and where binary join strategies might exhibit degenerate behaviour. Also keep in mind that WCOJ is still in its infancy compared to binary joins. So even if a WCOJ might guarantee you certain properties, in practice it might be that binary joins fare very well as they have been optimized for decades. [^3]  
 
-In the next post we will look at concrete WCOJ algorithm. 
+In the [next post](/wcoj-generic-join) we will look at concrete WCOJ algorithm.
 
 [^1]: <https://arxiv.org/abs/1711.03860>
 
