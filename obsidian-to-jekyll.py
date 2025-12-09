@@ -8,8 +8,53 @@ Usage:
 
 import sys
 import re
+import shutil
 from datetime import datetime
 from pathlib import Path
+
+
+def process_images(content, obsidian_path, assets_dir):
+    """
+    Find image references, copy images to assets, and update paths.
+
+    Handles Obsidian's wikilink image syntax: ![[image_name.png]]
+
+    Args:
+        content: The markdown content
+        obsidian_path: Path to the source Obsidian file
+        assets_dir: Path to the Jekyll assets directory
+
+    Returns:
+        Updated content with corrected image paths
+    """
+    # Find all Obsidian wikilink image references like ![[image_name.png]]
+    image_pattern = r'!\[\[([^\]]+\.(?:png|jpg|jpeg|gif|svg|webp))\]\]'
+    matches = re.findall(image_pattern, content, re.IGNORECASE)
+
+    source_images_dir = obsidian_path.parent / 'images'
+    copied_images = []
+
+    for image_name in matches:
+        source_image = source_images_dir / image_name
+        dest_image = assets_dir / image_name
+
+        if source_image.exists():
+            shutil.copy2(source_image, dest_image)
+            copied_images.append(image_name)
+        else:
+            print(f"  Warning: Image not found: {source_image}")
+
+    # Convert Obsidian wikilinks to standard markdown with assets path
+    # ![[image.png]] -> ![image](assets/image.png)
+    def replace_image(match):
+        image_name = match.group(1)
+        # Use filename without extension as alt text
+        alt_text = Path(image_name).stem
+        return f'![{alt_text}](assets/{image_name})'
+
+    content = re.sub(image_pattern, replace_image, content, flags=re.IGNORECASE)
+
+    return content, copied_images
 
 
 def slugify(text):
@@ -66,7 +111,11 @@ def create_jekyll_post(obsidian_file_path, custom_date=None):
     # Get the script directory and construct posts directory path
     script_dir = Path(__file__).parent
     posts_dir = script_dir / '_posts'
+    assets_dir = script_dir / 'assets'
     output_path = posts_dir / filename
+
+    # Process images: copy to assets and update paths
+    content, copied_images = process_images(content, obsidian_path, assets_dir)
 
     # Create Jekyll front matter
     front_matter = f"""---
@@ -91,6 +140,8 @@ permalink: {slug}
     print(f"  Title: {title}")
     print(f"  Date: {date_str}")
     print(f"  Permalink: {slug}")
+    if copied_images:
+        print(f"  Copied images: {', '.join(copied_images)}")
 
     return output_path
 
