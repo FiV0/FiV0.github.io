@@ -122,13 +122,13 @@ where $\rho$ is the size of the minimum edge cover and $\rho^*$ is the size of t
 
 Coming back to the triangle query
 
-$$Q(A,B,C) = G(A,B) \bowtie G(B,C) \bowtie G(C,A)$$
+$$Q(A,B,C) = R(A,B) \bowtie S(B,C) \bowtie T(C,A)$$
 
 the bound then simplifies to 
 
-$$|Q| \leq N ^{3/2}$$
+$$|Q| \leq |R|^{1/2} \, |S|^{1/2} \, |T|^{1/2} \leq N ^{3/2}$$
 
-Assigning every edge of the triangle query hypergraph a weight of $1/2$ satisfies the relaxed constraints of the fractional edge cover. This actually means any graph can have at most $N^{3/2}$ triangles!!!
+by assigning every edge of the triangle query hypergraph a weight of $1/2$. This assignment satisfies the relaxed constraints of the fractional edge cover. This actually means any graph can have at most $N^{3/2}$ triangles!!!
 
 For joins it means that any binary join strategy for the triangle query will potentially produce $O(N^2)$ intermediate result rows but the AGM bound proves there can never be more than $O(N^{3/2})$ result rows. The whole idea of Worst Case Optimal Join (WCOJ henceforth) is to join the relations in such a manner that we don't go over the worst-case bound (the specific bound depends of course on the query and the size of the involved relations). 
 
