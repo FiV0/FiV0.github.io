@@ -4,8 +4,18 @@
   display: block;
 }
 
+.masthead-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.social-buttons {
+    white-space: nowrap;
+}
+
 .social-button {
-    float: right; /* Aligns the button to the right */
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -43,12 +53,20 @@
 
 /* Mobile styles for social buttons */
 @media (max-width: 600px) {
+    .masthead-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .social-buttons {
+        margin-top: 10px;
+    }
+
     .social-button {
-        float: none;
         width: 32px;
         height: 32px;
         font-size: 16px;
-        margin-left: 4px;
-        margin-right: 4px !important;
+        margin-left: 0;
+        margin-right: 8px;
     }
 }
