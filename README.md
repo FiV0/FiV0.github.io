@@ -21,3 +21,21 @@ build the site locally
 bundle exec jekyll serve
 ```
 it then be served under `localhost:4000`.
+
+### Creating posts from Obsidian
+
+Use the `obsidian-to-jekyll.py` script to convert Obsidian markdown files to Jekyll posts:
+
+```bash
+# Normal post (listed on main site)
+python obsidian-to-jekyll.py '/path/to/obsidian/My Post.md'
+
+# Draft post (accessible by link but not listed)
+python obsidian-to-jekyll.py --draft '/path/to/obsidian/My Post.md'
+```
+
+The script handles:
+- Obsidian wikilink images (`![[image.png]]`) - copies to `assets/` and converts syntax
+- Obsidian wikilinks (`[[note|display]]`) - converts to plain text
+- Display math (`$$...$$`) - ensures proper line spacing for MathJax
+- Bare URLs - converts to clickable links
