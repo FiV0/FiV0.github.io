@@ -40,3 +40,15 @@
 .bluesky-button:hover {
     color: #1185FE; /* Bluesky blue */
 }
+
+/* Mobile styles for social buttons */
+@media (max-width: 600px) {
+    .social-button {
+        float: none;
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+        margin-left: 4px;
+        margin-right: 4px !important;
+    }
+}
