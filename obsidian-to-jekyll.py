@@ -57,6 +57,26 @@ def process_images(content, obsidian_path, assets_dir):
     return content, copied_images
 
 
+def transform_urls(content):
+    """
+    Transform bare URLs into markdown links.
+
+    https://example.com -> <https://example.com>
+
+    Skips URLs that are already in markdown link syntax [text](url) or <url>.
+    """
+    # Pattern for bare URLs not already in markdown links
+    # Negative lookbehind for ]( or < to avoid matching URLs already in links
+    url_pattern = r'(?<!\]\()(?<![<\[])https?://[^\s\)\]>]+'
+
+    def make_link(match):
+        url = match.group(0)
+        return f'<{url}>'
+
+    content = re.sub(url_pattern, make_link, content)
+    return content
+
+
 def transform_wikilinks(content):
     """
     Transform Obsidian wikilinks to plain text.
@@ -163,6 +183,9 @@ def create_jekyll_post(obsidian_file_path, custom_date=None):
 
     # Transform Obsidian wikilinks to plain text
     content = transform_wikilinks(content)
+
+    # Transform bare URLs into links
+    content = transform_urls(content)
 
     # Transform display math to be on its own lines
     content = transform_display_math(content)
