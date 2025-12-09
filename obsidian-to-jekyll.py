@@ -57,6 +57,50 @@ def process_images(content, obsidian_path, assets_dir):
     return content, copied_images
 
 
+def transform_wikilinks(content):
+    """
+    Transform Obsidian wikilinks to plain text.
+
+    [[note_name|display text]] -> display text
+    [[note_name]] -> note_name
+    """
+    # Match [[note|display]] and keep only display text
+    content = re.sub(r'\[\[[^\]|]+\|([^\]]+)\]\]', r'\1', content)
+    # Match [[note]] without display text and keep note name
+    content = re.sub(r'\[\[([^\]]+)\]\]', r'\1', content)
+    return content
+
+
+def transform_display_math(content):
+    """
+    Transform $$ ... $$ display math to be on its own lines with blank lines around.
+
+    Jekyll/MathJax requires display math to be on separate lines for proper rendering.
+    """
+    # First, handle single-line $$...$$ equations
+    # Match $$...$$ on a single line (content doesn't contain newlines)
+    # Use a function to add newlines around it
+
+    def ensure_block_math(match):
+        """Ensure display math has blank lines around it."""
+        return '\n\n' + match.group(0) + '\n\n'
+
+    # Pattern for single-line display math: $$...$$
+    # This matches $$ followed by content (no $) followed by $$
+    single_line_pattern = r'\$\$[^$]+\$\$'
+
+    # Replace all single-line display math with properly spaced versions
+    content = re.sub(single_line_pattern, ensure_block_math, content)
+
+    # Clean up excessive newlines (more than 2 consecutive)
+    content = re.sub(r'\n{3,}', '\n\n', content)
+
+    # Also clean up cases where blank line + text + blank line creates too much space
+    # But preserve the structure
+
+    return content
+
+
 def slugify(text):
     """Convert text to a URL-friendly slug."""
     # Convert to lowercase
@@ -116,6 +160,12 @@ def create_jekyll_post(obsidian_file_path, custom_date=None):
 
     # Process images: copy to assets and update paths
     content, copied_images = process_images(content, obsidian_path, assets_dir)
+
+    # Transform Obsidian wikilinks to plain text
+    content = transform_wikilinks(content)
+
+    # Transform display math to be on its own lines
+    content = transform_display_math(content)
 
     # Create Jekyll front matter
     front_matter = f"""---
