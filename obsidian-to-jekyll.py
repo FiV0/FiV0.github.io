@@ -136,14 +136,14 @@ def slugify(text):
     return text
 
 
-def create_jekyll_post(obsidian_file_path, custom_date=None, draft=False):
+def create_jekyll_post(obsidian_file_path, custom_date=None, hidden=False):
     """
     Convert an Obsidian markdown file to a Jekyll post.
 
     Args:
         obsidian_file_path: Path to the Obsidian markdown file
         custom_date: Optional datetime object for the post date (defaults to today)
-        draft: If True, add published: false to hide from listings but keep accessible by link
+        hidden: If True, add hidden: true to hide from archive but keep accessible by link
     """
     obsidian_path = Path(obsidian_file_path)
 
@@ -192,14 +192,14 @@ def create_jekyll_post(obsidian_file_path, custom_date=None, draft=False):
     content = transform_display_math(content)
 
     # Create Jekyll front matter
-    published_line = "published: false\n" if draft else ""
+    hidden_line = "hidden: true\n" if hidden else ""
     front_matter = f"""---
 layout: post
 title: {title}
 comments: true
 redirect_from: "/{date_path}/{slug}/"
 permalink: {slug}
-{published_line}---
+{hidden_line}---
 
 """
 
@@ -223,21 +223,21 @@ permalink: {slug}
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python obsidian-to-jekyll.py [--draft] <path-to-obsidian-file>")
+        print("Usage: python obsidian-to-jekyll.py [--hidden] <path-to-obsidian-file>")
         print("\nOptions:")
-        print("  --draft    Create post as unpublished (accessible by link but not listed)")
+        print("  --hidden   Hide post from archive (accessible by link but not listed)")
         print("\nExample:")
         print("  python obsidian-to-jekyll.py '/home/user/obsidian/My Post.md'")
-        print("  python obsidian-to-jekyll.py --draft '/home/user/obsidian/My Post.md'")
+        print("  python obsidian-to-jekyll.py --hidden '/home/user/obsidian/My Post.md'")
         sys.exit(1)
 
-    draft = False
-    if '--draft' in sys.argv:
-        draft = True
-        sys.argv.remove('--draft')
+    hidden = False
+    if '--hidden' in sys.argv:
+        hidden = True
+        sys.argv.remove('--hidden')
 
     obsidian_file = sys.argv[1]
-    create_jekyll_post(obsidian_file, draft=draft)
+    create_jekyll_post(obsidian_file, hidden=hidden)
 
 
 if __name__ == '__main__':

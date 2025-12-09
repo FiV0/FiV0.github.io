@@ -27,11 +27,11 @@ it then be served under `localhost:4000`.
 Use the `obsidian-to-jekyll.py` script to convert Obsidian markdown files to Jekyll posts:
 
 ```bash
-# Normal post (listed on main site)
+# Normal post (listed in archive)
 python obsidian-to-jekyll.py '/path/to/obsidian/My Post.md'
 
-# Draft post (accessible by link but not listed)
-python obsidian-to-jekyll.py --draft '/path/to/obsidian/My Post.md'
+# Hidden post (accessible by link but not listed in archive)
+python obsidian-to-jekyll.py --hidden '/path/to/obsidian/My Post.md'
 ```
 
 The script handles:
