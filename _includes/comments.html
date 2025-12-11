@@ -1,3 +1,24 @@
-{% if page.comments %}
-<!-- Comments placeholder - no comment system currently configured -->
+{% if page.comments or page.title == "Home" %}
+{% if page.title == "Home" %}
+  {% assign first_post = site.posts | first %}
+  {% assign giscus_term = first_post.permalink | default: first_post.url %}
+{% else %}
+  {% assign giscus_term = page.permalink | default: page.url %}
+{% endif %}
+<script src="https://giscus.app/client.js"
+        data-repo="FiV0/FiV0.github.io"
+        data-repo-id="MDEwOlJlcG9zaXRvcnk3NTgyOTY5MQ=="
+        data-category="Comments"
+        data-category-id="DIC_kwDOBIURu84CzqFd"
+        data-mapping="specific"
+        data-term="{{ giscus_term }}"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="light"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+</script>
 {% endif %}
