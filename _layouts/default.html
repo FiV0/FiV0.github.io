@@ -25,6 +25,9 @@
             <a href="https://bsky.app/profile/fivo.bsky.social" target="_blank" class="social-button bluesky-button">
               <i class="fa-brands fa-bluesky"></i>
             </a>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+              <i class="fas fa-moon" id="theme-icon"></i>
+            </button>
           </span>
         </div>
 
@@ -41,5 +44,51 @@
       </div>
     </div>
 
+    <script>
+      (function() {
+        var toggle = document.getElementById('theme-toggle');
+        var icon = document.getElementById('theme-icon');
+
+        function getTheme() {
+          return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+        }
+
+        function setTheme(theme) {
+          if (theme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+          } else {
+            document.documentElement.removeAttribute('data-theme');
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+          }
+          localStorage.setItem('theme', theme);
+
+          // Update Giscus theme
+          var giscusFrame = document.querySelector('iframe.giscus-frame');
+          if (giscusFrame) {
+            giscusFrame.contentWindow.postMessage({
+              giscus: {
+                setConfig: {
+                  theme: theme === 'dark' ? 'dark' : 'light'
+                }
+              }
+            }, 'https://giscus.app');
+          }
+        }
+
+        // Set initial icon state
+        if (getTheme() === 'dark') {
+          icon.classList.remove('fa-moon');
+          icon.classList.add('fa-sun');
+        }
+
+        toggle.addEventListener('click', function() {
+          var currentTheme = getTheme();
+          setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        });
+      })();
+    </script>
   </body>
 </html>

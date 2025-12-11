@@ -59,15 +59,16 @@ html {
 }
 
 body {
-  color: #515151;
-  background-color: #fff;
+  color: var(--text-color);
+  background-color: var(--bg-color);
   -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* No `:visited` state is required by default (browsers will use `a`) */
 a {
-  color: #268bd2;
+  color: var(--link-color);
   text-decoration: none;
 }
 /* `:focus` is linked to `:hover` for basic accessibility */
@@ -81,7 +82,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: .5rem;
   font-weight: bold;
   line-height: 1.25;
-  color: #313131;
+  color: var(--heading-color);
   text-rendering: optimizeLegibility;
 }
 h1 {
@@ -107,7 +108,7 @@ p {
 }
 
 strong {
-  color: #303030;
+  color: var(--strong-color);
 }
 
 
@@ -129,19 +130,19 @@ hr {
   position: relative;
   margin: 1.5rem 0;
   border: 0;
-  border-top: 1px solid #eee;
-  border-bottom: 1px solid #fff;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--bg-color);
 }
 
 abbr {
   font-size: 85%;
   font-weight: bold;
-  color: #555;
+  color: var(--abbr-color);
   text-transform: uppercase;
 }
 abbr[title] {
   cursor: help;
-  border-bottom: 1px dotted #e5e5e5;
+  border-bottom: 1px dotted var(--border-color-dark);
 }
 
 /* Code */
@@ -152,8 +153,8 @@ pre {
 code {
   padding: .25em .5em;
   font-size: 85%;
-  color: #bf616a;
-  background-color: #f9f9f9;
+  color: var(--code-color);
+  background-color: var(--code-bg);
   border-radius: 3px;
 }
 pre {
@@ -165,7 +166,7 @@ pre {
   line-height: 1.4;
   white-space: pre;
   overflow-x: auto;
-  background-color: #f9f9f9;
+  background-color: var(--code-bg);
 }
 pre code {
   padding: 0;
@@ -185,8 +186,8 @@ pre code {
 blockquote {
   padding: .5rem 1rem;
   margin: .8rem 0;
-  color: #7a7a7a;
-  border-left: .25rem solid #e5e5e5;
+  color: var(--blockquote-color);
+  border-left: .25rem solid var(--border-color-dark);
 }
 blockquote p:last-child {
   margin-bottom: 0;
@@ -208,17 +209,17 @@ img {
 /* Tables */
 table {
   margin-bottom: 1rem;
-  border: 1px solid #e5e5e5;
+  border: 1px solid var(--border-color-dark);
   border-collapse: collapse;
 }
 td,
 th {
   padding: .25rem .5rem;
-  border: 1px solid #e5e5e5;
+  border: 1px solid var(--border-color-dark);
 }
 tbody tr:nth-child(odd) td,
 tbody tr:nth-child(odd) th {
-  background-color: #f9f9f9;
+  background-color: var(--code-bg);
 }
 
 
@@ -244,8 +245,8 @@ tbody tr:nth-child(odd) th {
 .message {
   margin-bottom: 1rem;
   padding: 1rem;
-  color: #717171;
-  background-color: #f9f9f9;
+  color: var(--blockquote-color);
+  background-color: var(--code-bg);
 }
 
 
@@ -278,15 +279,15 @@ tbody tr:nth-child(odd) th {
 .masthead-title {
   margin-top: 0;
   margin-bottom: 0;
-  color: #505050;
+  color: var(--masthead-color);
 }
 .masthead-title a {
-  color: #505050;
+  color: var(--masthead-color);
 }
 .masthead-title small {
   font-size: 75%;
   font-weight: 400;
-  color: #c0c0c0;
+  color: var(--light-muted-color);
   letter-spacing: 0;
 }
 
@@ -307,7 +308,7 @@ tbody tr:nth-child(odd) th {
 .page-title,
 .post-title,
 .post-title a {
-  color: #303030;
+  color: var(--strong-color);
 }
 .page-title,
 .post-title {
@@ -319,14 +320,14 @@ tbody tr:nth-child(odd) th {
   display: block;
   margin-top: -.5rem;
   margin-bottom: 1rem;
-  color: #9a9a9a;
+  color: var(--muted-color);
 }
 
 /* Related posts */
 .related {
   padding-top: 2rem;
   padding-bottom: 2rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--border-color);
 }
 .related-posts {
   padding-left: 0;
@@ -337,10 +338,10 @@ tbody tr:nth-child(odd) th {
 }
 .related-posts li small {
   font-size: 75%;
-  color: #999;
+  color: var(--muted-color);
 }
 .related-posts li a:hover {
-  color: #268bd2;
+  color: var(--link-color);
   text-decoration: none;
 }
 .related-posts li a:hover small {
@@ -360,7 +361,7 @@ tbody tr:nth-child(odd) th {
   margin-left: -1rem;
   margin-right: -1rem;
   font-family: "PT Sans", Helvetica, Arial, sans-serif;
-  color: #ccc;
+  color: var(--light-muted-color);
   text-align: center;
 }
 
@@ -368,7 +369,7 @@ tbody tr:nth-child(odd) th {
 .pagination-item {
   display: block;
   padding: 1rem;
-  border: 1px solid #eee;
+  border: 1px solid var(--border-color);
 }
 .pagination-item:first-child {
   margin-bottom: -1px;
@@ -376,7 +377,7 @@ tbody tr:nth-child(odd) th {
 
 /* Only provide a hover state for linked pagination items */
 a.pagination-item:hover {
-  background-color: #f5f5f5;
+  background-color: var(--pagination-bg-hover);
 }
 
 @media (min-width: 30rem) {

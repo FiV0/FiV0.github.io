@@ -21,9 +21,9 @@
     justify-content: center;
     width: 40px; /* Square dimensions */
     height: 40px;
-    background-color: #f5f5f5; /* Light gray background */
-    color: #505050; /* Darker gray text for contrast */
-    border: 1px solid #e0e0e0; /* Light border */
+    background-color: var(--social-bg);
+    color: var(--masthead-color);
+    border: 1px solid var(--social-border);
     border-radius: 5px; /* Set to 0 for sharp edges */
     text-decoration: none;
     font-size: 20px;
@@ -33,8 +33,8 @@
 }
 
 .social-button:hover {
-    background-color: #e0e0e0; /* Slightly darker on hover */
-    color: #0366d6; /* Blue accent color on hover */
+    background-color: var(--social-hover-bg);
+    color: var(--link-color);
     text-decoration: none; /* Prevents underlining on hover */
 }
 

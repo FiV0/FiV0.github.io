@@ -1,0 +1,103 @@
+/* Theme variables */
+:root {
+  /* Light theme (default) */
+  --bg-color: #fff;
+  --text-color: #515151;
+  --heading-color: #313131;
+  --strong-color: #303030;
+  --link-color: #268bd2;
+  --muted-color: #9a9a9a;
+  --light-muted-color: #c0c0c0;
+  --border-color: #eee;
+  --border-color-dark: #e5e5e5;
+  --code-bg: #f9f9f9;
+  --code-color: #bf616a;
+  --blockquote-color: #7a7a7a;
+  --abbr-color: #555;
+  --masthead-color: #505050;
+  --pagination-bg-hover: #f5f5f5;
+  --social-bg: #f5f5f5;
+  --social-border: #e0e0e0;
+  --social-hover-bg: #e0e0e0;
+
+  /* Syntax highlighting - light */
+  --syntax-comment: #999;
+  --syntax-keyword: #006699;
+  --syntax-operator: #555555;
+  --syntax-string: #d44950;
+  --syntax-number: #FF6600;
+  --syntax-class: #00AA88;
+  --syntax-function: #CC00FF;
+  --syntax-tag: #2f6f9f;
+  --syntax-attr: #4f9fcf;
+  --syntax-builtin: #336666;
+  --syntax-variable: #003333;
+}
+
+[data-theme="dark"] {
+  /* Dark theme - dark gray tones */
+  --bg-color: #1c1c1c;
+  --text-color: #d4d4d4;
+  --heading-color: #ececec;
+  --strong-color: #f0f0f0;
+  --link-color: #6bb8e8;
+  --muted-color: #999;
+  --light-muted-color: #777;
+  --border-color: #383838;
+  --border-color-dark: #484848;
+  --code-bg: #2a2a2a;
+  --code-color: #f0a0a0;
+  --blockquote-color: #aaa;
+  --abbr-color: #bbb;
+  --masthead-color: #d0d0d0;
+  --pagination-bg-hover: #2a2a2a;
+  --social-bg: #2a2a2a;
+  --social-border: #484848;
+  --social-hover-bg: #383838;
+
+  /* Syntax highlighting - dark */
+  --syntax-comment: #7ec87e;
+  --syntax-keyword: #6cb6ff;
+  --syntax-operator: #d4d4d4;
+  --syntax-string: #e8a880;
+  --syntax-number: #c8e4a8;
+  --syntax-class: #60d0b8;
+  --syntax-function: #e8dc80;
+  --syntax-tag: #6cb6ff;
+  --syntax-attr: #a8d8ff;
+  --syntax-builtin: #60d0b8;
+  --syntax-variable: #a8d8ff;
+}
+
+/* Theme toggle button */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: var(--social-bg);
+  color: var(--masthead-color);
+  border: 1px solid var(--social-border);
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+  margin-left: 8px;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle:hover {
+  background-color: var(--social-hover-bg);
+  color: #ffd700;
+}
+
+@media (max-width: 600px) {
+  .theme-toggle {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+    margin-left: 0;
+    margin-right: 8px;
+  }
+}

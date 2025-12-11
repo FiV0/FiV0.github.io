@@ -5,20 +5,29 @@
 {% else %}
   {% assign giscus_term = page.permalink | default: page.url %}
 {% endif %}
-<script src="https://giscus.app/client.js"
-        data-repo="FiV0/FiV0.github.io"
-        data-repo-id="MDEwOlJlcG9zaXRvcnk3NTgyOTY5MQ=="
-        data-category="Comments"
-        data-category-id="DIC_kwDOBIURu84CzqFd"
-        data-mapping="specific"
-        data-term="{{ giscus_term }}"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="bottom"
-        data-theme="light"
-        data-lang="en"
-        crossorigin="anonymous"
-        async>
+<script>
+  (function() {
+    var theme = localStorage.getItem('theme');
+    if (!theme) {
+      theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    var script = document.createElement('script');
+    script.src = 'https://giscus.app/client.js';
+    script.setAttribute('data-repo', 'FiV0/FiV0.github.io');
+    script.setAttribute('data-repo-id', 'MDEwOlJlcG9zaXRvcnk3NTgyOTY5MQ==');
+    script.setAttribute('data-category', 'Comments');
+    script.setAttribute('data-category-id', 'DIC_kwDOBIURu84CzqFd');
+    script.setAttribute('data-mapping', 'specific');
+    script.setAttribute('data-term', '{{ giscus_term }}');
+    script.setAttribute('data-strict', '0');
+    script.setAttribute('data-reactions-enabled', '1');
+    script.setAttribute('data-emit-metadata', '0');
+    script.setAttribute('data-input-position', 'bottom');
+    script.setAttribute('data-theme', theme);
+    script.setAttribute('data-lang', 'en');
+    script.setAttribute('crossorigin', 'anonymous');
+    script.async = true;
+    document.currentScript.parentNode.insertBefore(script, document.currentScript);
+  })();
 </script>
 {% endif %}
