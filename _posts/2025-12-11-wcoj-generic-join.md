@@ -2,9 +2,8 @@
 layout: post
 title: WCOJ - Generic Join
 comments: true
-redirect_from: "/2025/12/09/wcoj-generic-join/"
+redirect_from: "/2025/12/11/wcoj-generic-join/"
 permalink: wcoj-generic-join
-hidden: true
 ---
 
 *Explaination of a worst-case-optimal variable oriented join algorithm - GenericJoin [^2]*
