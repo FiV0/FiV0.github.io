@@ -93,15 +93,17 @@ class GenericJoin(val extenders: List<PrefixExtender>, levels: Int) : Join<Resul
         // For every level, perform a single join with the extenders participating in that level
         for (extenderSet in extenderSets) {
             val singleJoin = GenericSingleJoin(extenderSet, prefixes)
-            val newTuples = singleJoin.join()
-            prefixes = newTuples
+            prefixes = singleJoin.join()
         }
         return prefixes
     }
 }
 ```
 
-And that's it, in roughly ~50 LOC (modulo all the stuff I have left out) we have gotten in implementation of a WCOJ algorithm. In a next post will see how the `PrefixExtender` interface composes nicely for certain logical connectors of Datalog like `not`, `and` and `or`.
+The extended prefixes at one level become the new prefixes at the next level and we start with an empty prefix.
+At the last level the prefixes are just the result tuples.
+And that's it, in roughly ~50 LOC (modulo all the stuff I have left out) we have gotten in implementation of a WCOJ algorithm.
+In a next post will see how the `PrefixExtender` interface composes nicely for certain logical connectors of Datalog like `not`, `and` and `or`.
 
 [^1]: You can find the code from this post at <https://github.com/FiV0/hooray2>
 
