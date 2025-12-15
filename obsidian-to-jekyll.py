@@ -79,11 +79,30 @@ def transform_urls(content):
 
 def transform_wikilinks(content):
     """
-    Transform Obsidian wikilinks to plain text.
+    Transform Obsidian wikilinks to plain text or markdown links.
 
+    [[#Header]] -> [Header](#header)
+    [[#Header|display text]] -> [display text](#header)
     [[note_name|display text]] -> display text
     [[note_name]] -> note_name
     """
+    # Handle internal header links: [[#Header|display]] -> [display](#header)
+    def header_link_with_display(match):
+        header = match.group(1)
+        display = match.group(2)
+        anchor = slugify(header)
+        return f'[{display}](#{anchor})'
+
+    content = re.sub(r'\[\[#([^\]|]+)\|([^\]]+)\]\]', header_link_with_display, content)
+
+    # Handle internal header links: [[#Header]] -> [Header](#header)
+    def header_link(match):
+        header = match.group(1)
+        anchor = slugify(header)
+        return f'[{header}](#{anchor})'
+
+    content = re.sub(r'\[\[#([^\]]+)\]\]', header_link, content)
+
     # Match [[note|display]] and keep only display text
     content = re.sub(r'\[\[[^\]|]+\|([^\]]+)\]\]', r'\1', content)
     # Match [[note]] without display text and keep note name
