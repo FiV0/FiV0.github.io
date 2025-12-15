@@ -103,7 +103,7 @@ class GenericJoin(val extenders: List<PrefixExtender>, levels: Int) : Join<Resul
 The extended prefixes at one level become the new prefixes at the next level and we start with an empty prefix.
 At the last level the prefixes are just the result tuples.
 And that's it, in roughly ~50 LOC (modulo all the stuff I have left out) we have gotten an implementation of a WCOJ algorithm.
-In a next post will see how the `PrefixExtender` interface composes nicely for certain logical connectors of Datalog like `not`, `and` and `or`.
+In the [next post](wcoj-datalog-and-genericjoin) we will see how the `PrefixExtender` interface composes nicely for certain logical connectors of Datalog like `not`, `and` and `or`.
 
 [^1]: You can find the code from this post at <https://github.com/FiV0/hooray2>
 
