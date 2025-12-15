@@ -6,9 +6,9 @@ redirect_from: "/2025/12/11/wcoj-generic-join/"
 permalink: wcoj-generic-join
 ---
 
-*Explaination of a worst-case-optimal variable oriented join algorithm - GenericJoin [^2]*
+*Explanation of a worst-case-optimal variable oriented join algorithm - GenericJoin [^2]*
 
-We discussed what Worst-case optimal join (WCOJ) is in a [previous post](/wcoj-graph-join-correspondence). Today we are going to try to convey the intuitions behind an actual WCOJ algorithm. Most of the code will be in Kotlin [^1]. A WCOJ is a join that is variable oriented instead of relation oriented. What do I mean by that? Coming back to our beloved triangle query (You really need love this query as it will stay with us for quite a while).
+We discussed what Worst-case optimal join (WCOJ) is in a [previous post](/wcoj-graph-join-correspondence). Today we are going to try to convey the intuitions behind an actual WCOJ algorithm. Most of the code will be in Kotlin [^1]. A WCOJ is a join that is variable oriented instead of relation oriented. What do I mean by that? Coming back to our beloved triangle query (You really need to love this query as it will stay with us for quite a while).
 
 $$Q(A,B,C) = R(A,B) \bowtie S(B,C) \bowtie T(C,A)$$
 
@@ -22,7 +22,7 @@ This is also why I quite like the triangle query in Datalog as an example when e
          [?b :g/to ?c]]}
 ```
 
-The variables are explicit and in [Datomic](https://www.datomic.com/ ) and [XTDB v1](https://v1-docs.xtdb.com/main/) the indices `EAV`, `AEV` and `AVE` are also be default part of the database. Prefix lookups (given a bound variable`?a` you can efficiently find `?b` via the `AEV` index) are therefore possible (for most scenarios).
+The variables are explicit and in [Datomic](https://www.datomic.com/ ) and [XTDB v1](https://v1-docs.xtdb.com/main/) the indices `EAV`, `AEV` and `AVE` are also by default part of the database. Prefix lookups (given a bound variable`?a` you can efficiently find `?b` via the `AEV` index) are therefore possible (for most scenarios).
 
 The following interface is shamelessly stolen from a very good [blog post]() on Generic Join.
 ```kotlin
@@ -102,7 +102,7 @@ class GenericJoin(val extenders: List<PrefixExtender>, levels: Int) : Join<Resul
 
 The extended prefixes at one level become the new prefixes at the next level and we start with an empty prefix.
 At the last level the prefixes are just the result tuples.
-And that's it, in roughly ~50 LOC (modulo all the stuff I have left out) we have gotten in implementation of a WCOJ algorithm.
+And that's it, in roughly ~50 LOC (modulo all the stuff I have left out) we have gotten an implementation of a WCOJ algorithm.
 In a next post will see how the `PrefixExtender` interface composes nicely for certain logical connectors of Datalog like `not`, `and` and `or`.
 
 [^1]: You can find the code from this post at <https://github.com/FiV0/hooray2>
