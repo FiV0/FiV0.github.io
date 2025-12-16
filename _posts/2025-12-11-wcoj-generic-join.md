@@ -24,7 +24,7 @@ This is also why I quite like the triangle query in Datalog as an example when e
 
 The variables are explicit and in [Datomic](https://www.datomic.com/ ) and [XTDB v1](https://v1-docs.xtdb.com/main/) the indices `EAV`, `AEV` and `AVE` are also by default part of the database. Prefix lookups (given a bound variable`?a` you can efficiently find `?b` via the `AEV` index) are therefore possible (for most scenarios).
 
-The following interface is shamelessly stolen from a very good [blog post]() on Generic Join.
+The following interface is shamelessly stolen from a very good [blog post](https://www.frankmcsherry.org/dataflow/relational/join/2015/04/11/genericjoin.html) on Generic Join.
 ```kotlin
 typealias Prefix = List<Any>
 typealias Extension = Any
