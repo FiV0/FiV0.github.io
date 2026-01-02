@@ -108,6 +108,44 @@ def find_post_permalink(note_name, posts_dir):
     return None
 
 
+def protect_code_blocks(content):
+    """
+    Replace code blocks with placeholders to protect them during transformations.
+
+    Returns:
+        tuple: (protected_content, code_blocks_dict)
+    """
+    code_blocks = {}
+    counter = [0]  # Use list to allow modification in nested function
+
+    def save_code_block(match):
+        placeholder = f"___CODE_BLOCK_{counter[0]}___"
+        code_blocks[placeholder] = match.group(0)
+        counter[0] += 1
+        return placeholder
+
+    # Protect fenced code blocks
+    protected = re.sub(r'```[^\n]*\n.*?```', save_code_block, content, flags=re.DOTALL)
+
+    # Protect inline code
+    def save_inline_code(match):
+        placeholder = f"___INLINE_CODE_{counter[0]}___"
+        code_blocks[placeholder] = match.group(0)
+        counter[0] += 1
+        return placeholder
+
+    protected = re.sub(r'`[^`]+`', save_inline_code, protected)
+
+    return protected, code_blocks
+
+
+def restore_code_blocks(content, code_blocks):
+    """Restore code blocks from placeholders."""
+    for placeholder, code in code_blocks.items():
+        content = content.replace(placeholder, code)
+    return content
+
+
 def transform_wikilinks(content, posts_dir=None):
     """
     Transform Obsidian wikilinks to plain text or markdown links.
@@ -121,6 +159,9 @@ def transform_wikilinks(content, posts_dir=None):
         content: The markdown content
         posts_dir: Path to _posts directory for finding blog post links
     """
+    # Protect code blocks from wikilink transformation
+    protected_content, code_blocks = protect_code_blocks(content)
+
     # Handle internal header links: [[#Header|display]] -> [display](#header)
     def header_link_with_display(match):
         header = match.group(1)
@@ -128,7 +169,7 @@ def transform_wikilinks(content, posts_dir=None):
         anchor = slugify(header)
         return f'[{display}](#{anchor})'
 
-    content = re.sub(r'\[\[#([^\]|]+)\|([^\]]+)\]\]', header_link_with_display, content)
+    protected_content = re.sub(r'\[\[#([^\]|]+)\|([^\]]+)\]\]', header_link_with_display, protected_content)
 
     # Handle internal header links: [[#Header]] -> [Header](#header)
     def header_link(match):
@@ -136,7 +177,7 @@ def transform_wikilinks(content, posts_dir=None):
         anchor = slugify(header)
         return f'[{header}](#{anchor})'
 
-    content = re.sub(r'\[\[#([^\]]+)\]\]', header_link, content)
+    protected_content = re.sub(r'\[\[#([^\]]+)\]\]', header_link, protected_content)
 
     # Handle blog post links with section anchors: [[note#section|display]] -> [display](permalink#section)
     if posts_dir:
@@ -152,7 +193,7 @@ def transform_wikilinks(content, posts_dir=None):
                 # If no post found, just return the display text
                 return display
 
-        content = re.sub(r'\[\[([^#\]|]+)#([^\]|]+)\|([^\]]+)\]\]', post_link_with_section_and_display, content)
+        protected_content = re.sub(r'\[\[([^#\]|]+)#([^\]|]+)\|([^\]]+)\]\]', post_link_with_section_and_display, protected_content)
 
         # Handle blog post links with section anchors: [[note#section]] -> [note#section](permalink#section)
         def post_link_with_section(match):
@@ -166,7 +207,7 @@ def transform_wikilinks(content, posts_dir=None):
                 # If no post found, just return the original text
                 return f'{note_name}#{section}'
 
-        content = re.sub(r'\[\[([^#\]|]+)#([^\]|]+)\]\]', post_link_with_section, content)
+        protected_content = re.sub(r'\[\[([^#\]|]+)#([^\]|]+)\]\]', post_link_with_section, protected_content)
 
         # Handle blog post links: [[note|display]] -> [display](permalink)
         def post_link_with_display(match):
@@ -179,7 +220,7 @@ def transform_wikilinks(content, posts_dir=None):
                 # If no post found, just return the display text
                 return display
 
-        content = re.sub(r'\[\[([^\]|#]+)\|([^\]]+)\]\]', post_link_with_display, content)
+        protected_content = re.sub(r'\[\[([^\]|#]+)\|([^\]]+)\]\]', post_link_with_display, protected_content)
 
         # Handle blog post links: [[note]] -> [note](permalink)
         def post_link(match):
@@ -191,13 +232,16 @@ def transform_wikilinks(content, posts_dir=None):
                 # If no post found, just return the note name
                 return note_name
 
-        content = re.sub(r'\[\[([^\]|#]+)\]\]', post_link, content)
+        protected_content = re.sub(r'\[\[([^\]|#]+)\]\]', post_link, protected_content)
     else:
         # Fallback to old behavior if posts_dir not provided
         # Match [[note|display]] and keep only display text
-        content = re.sub(r'\[\[[^\]|]+\|([^\]]+)\]\]', r'\1', content)
+        protected_content = re.sub(r'\[\[[^\]|]+\|([^\]]+)\]\]', r'\1', protected_content)
         # Match [[note]] without display text and keep note name
-        content = re.sub(r'\[\[([^\]]+)\]\]', r'\1', content)
+        protected_content = re.sub(r'\[\[([^\]]+)\]\]', r'\1', protected_content)
+
+    # Restore code blocks
+    content = restore_code_blocks(protected_content, code_blocks)
 
     return content
 
