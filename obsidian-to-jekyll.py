@@ -77,14 +77,49 @@ def transform_urls(content):
     return content
 
 
-def transform_wikilinks(content):
+def find_post_permalink(note_name, posts_dir):
+    """
+    Find a matching blog post and extract its permalink.
+
+    Args:
+        note_name: The note name from the wikilink
+        posts_dir: Path to the _posts directory
+
+    Returns:
+        Permalink string if found, None otherwise
+    """
+    # Slugify the note name to match against post filenames
+    slug = slugify(note_name)
+
+    # Search for posts containing this slug
+    for post_file in posts_dir.glob('*.md'):
+        if slug in post_file.stem:
+            # Read the post to extract permalink from front matter
+            try:
+                with open(post_file, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                    # Extract permalink from front matter
+                    permalink_match = re.search(r'^permalink:\s*(.+)$', content, re.MULTILINE)
+                    if permalink_match:
+                        return permalink_match.group(1).strip()
+            except Exception:
+                continue
+
+    return None
+
+
+def transform_wikilinks(content, posts_dir=None):
     """
     Transform Obsidian wikilinks to plain text or markdown links.
 
     [[#Header]] -> [Header](#header)
     [[#Header|display text]] -> [display text](#header)
-    [[note_name|display text]] -> display text
-    [[note_name]] -> note_name
+    [[note_name|display text]] -> [display text](permalink) if post found, else display text
+    [[note_name]] -> [note_name](permalink) if post found, else note_name
+
+    Args:
+        content: The markdown content
+        posts_dir: Path to _posts directory for finding blog post links
     """
     # Handle internal header links: [[#Header|display]] -> [display](#header)
     def header_link_with_display(match):
@@ -103,10 +138,38 @@ def transform_wikilinks(content):
 
     content = re.sub(r'\[\[#([^\]]+)\]\]', header_link, content)
 
-    # Match [[note|display]] and keep only display text
-    content = re.sub(r'\[\[[^\]|]+\|([^\]]+)\]\]', r'\1', content)
-    # Match [[note]] without display text and keep note name
-    content = re.sub(r'\[\[([^\]]+)\]\]', r'\1', content)
+    # Handle blog post links: [[note|display]] -> [display](permalink)
+    if posts_dir:
+        def post_link_with_display(match):
+            note_name = match.group(1)
+            display = match.group(2)
+            permalink = find_post_permalink(note_name, posts_dir)
+            if permalink:
+                return f'[{display}]({permalink})'
+            else:
+                # If no post found, just return the display text
+                return display
+
+        content = re.sub(r'\[\[([^\]|#]+)\|([^\]]+)\]\]', post_link_with_display, content)
+
+        # Handle blog post links: [[note]] -> [note](permalink)
+        def post_link(match):
+            note_name = match.group(1)
+            permalink = find_post_permalink(note_name, posts_dir)
+            if permalink:
+                return f'[{note_name}]({permalink})'
+            else:
+                # If no post found, just return the note name
+                return note_name
+
+        content = re.sub(r'\[\[([^\]|#]+)\]\]', post_link, content)
+    else:
+        # Fallback to old behavior if posts_dir not provided
+        # Match [[note|display]] and keep only display text
+        content = re.sub(r'\[\[[^\]|]+\|([^\]]+)\]\]', r'\1', content)
+        # Match [[note]] without display text and keep note name
+        content = re.sub(r'\[\[([^\]]+)\]\]', r'\1', content)
+
     return content
 
 
@@ -201,8 +264,8 @@ def create_jekyll_post(obsidian_file_path, custom_date=None, hidden=False):
     # Process images: copy to assets and update paths
     content, copied_images = process_images(content, obsidian_path, assets_dir)
 
-    # Transform Obsidian wikilinks to plain text
-    content = transform_wikilinks(content)
+    # Transform Obsidian wikilinks to plain text or blog post links
+    content = transform_wikilinks(content, posts_dir)
 
     # Transform bare URLs into links
     content = transform_urls(content)
