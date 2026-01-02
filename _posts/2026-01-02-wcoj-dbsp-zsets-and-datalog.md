@@ -20,7 +20,7 @@ So, given database $DB$ and some changes $\Delta DB$ (I just think of this as a 
 ```
 and the transaction
 ```clojure
-:db/add 1 :name "Ada Lovelace"
+[[:db/add 1 :name "Ada Lovelace"]]
 ```
 one would obtain the result (assuming Ada Lovelace is not yet part of the db)
 ```clojure
@@ -59,8 +59,8 @@ Similarly for recursive queries. Let's say you calculate the transitive closure 
 ```clojure
  '{:find [?a ?b]
    :where [(reachable ?a ?b)] 
-   :rules (reachable ?a ?b)
-	        [?a :g/to ?b
+   :rules [[(reachable ?a ?b)
+	        [?a :g/to ?b]]
            [(reachable ?a ?b)
             [?a :g/to ?c]
             (reachable ?c ?b)]]]})
@@ -188,7 +188,7 @@ the lookup of these two variables will likely happen on the `AEV` index. So $AEV
 
 The cool thing is that databases that [support](https://docs.datomic.com/peer-tutorial/see-historic-data.html) [history](https://xtdb.com/) could let you run an incremental query from a previous snapshot. Instead of writing queries over your history (via some special syntax), you simply write your query, initialise it from a given snapshot and then replay the transaction log.
 
-Up next we will see how to put the concepts of this post together with [Generic Join](wcoj-generic-join) to obtain an efficient version of a WCOJ algorithm in DBSP. 
+Up [next](wcoj-wcoj-meets-dbsp) we will see how to put the concepts of this post together with [Generic Join](wcoj-generic-join) to obtain an efficient version of a WCOJ algorithm in DBSP. 
 
 [^1]:<https://www.feldera.com/blog/implementing-z-sets> 
 
