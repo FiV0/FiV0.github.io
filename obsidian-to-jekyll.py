@@ -138,8 +138,37 @@ def transform_wikilinks(content, posts_dir=None):
 
     content = re.sub(r'\[\[#([^\]]+)\]\]', header_link, content)
 
-    # Handle blog post links: [[note|display]] -> [display](permalink)
+    # Handle blog post links with section anchors: [[note#section|display]] -> [display](permalink#section)
     if posts_dir:
+        def post_link_with_section_and_display(match):
+            note_name = match.group(1)
+            section = match.group(2)
+            display = match.group(3)
+            permalink = find_post_permalink(note_name, posts_dir)
+            section_slug = slugify(section)
+            if permalink:
+                return f'[{display}]({permalink}#{section_slug})'
+            else:
+                # If no post found, just return the display text
+                return display
+
+        content = re.sub(r'\[\[([^#\]|]+)#([^\]|]+)\|([^\]]+)\]\]', post_link_with_section_and_display, content)
+
+        # Handle blog post links with section anchors: [[note#section]] -> [note#section](permalink#section)
+        def post_link_with_section(match):
+            note_name = match.group(1)
+            section = match.group(2)
+            permalink = find_post_permalink(note_name, posts_dir)
+            section_slug = slugify(section)
+            if permalink:
+                return f'[{section}]({permalink}#{section_slug})'
+            else:
+                # If no post found, just return the original text
+                return f'{note_name}#{section}'
+
+        content = re.sub(r'\[\[([^#\]|]+)#([^\]|]+)\]\]', post_link_with_section, content)
+
+        # Handle blog post links: [[note|display]] -> [display](permalink)
         def post_link_with_display(match):
             note_name = match.group(1)
             display = match.group(2)
