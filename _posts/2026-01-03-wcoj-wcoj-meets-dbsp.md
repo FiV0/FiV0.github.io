@@ -2,9 +2,8 @@
 layout: post
 title: WCOJ - WCOJ meets DBSP
 comments: true
-redirect_from: "/2026/01/02/wcoj-wcoj-meets-dbsp/"
+redirect_from: "/2026/01/03/wcoj-wcoj-meets-dbsp/"
 permalink: wcoj-wcoj-meets-dbsp
-hidden: true
 ---
 
 *Putting together almost everything from the series to create an efficient (complexity-wise) WCOJ algorithm for DBSP.*
