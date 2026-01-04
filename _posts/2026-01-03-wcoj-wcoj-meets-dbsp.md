@@ -42,9 +42,9 @@ For the triangle query with variable order `(?a ?b ?c)`:
 This ensures each relation's weight contributes exactly once to the final result weight. To see how this weight-separation works in practice, let's first look at how we represent partial results during the join process.    
 ### Result representation as Indexed Z-Set's
 In the relational model result sets are often represented as lists of lists. For example consider the following result set of geo-data that becomes finer grained from left to right.
-![flat_listing](assets/flat_listing.png)
-In a trie representation (also used in factorized databases) the above would look as follows. 
-![trie_view5](assets/trie_view5.png)
+![flat_listing](/assets/flat_listing.png)
+In a trie representation (also used in factorized databases) the above would look as follows.
+![trie_view5](/assets/trie_view5.png)
 If `Country`, `City` and `District` were all join variables in a WCOJ join, this trie structure would be build up as we are joining. Leapfrog-Triejoin[^3] builds this structure in a DFS manner and GenericJoin[^4] walks this structure in BFS manner (probably good content for another post). When one extends one prefix with extensions in [GenericJoin](wcoj-generic-join), it essentially means extending a subtree by one level. For example for the prefix `(Germany, Berlin)` one would create new prefixes `(Germany, Berlin, Mitte)` and `(Germany, Berlin, Kreuzberg)`. When using persistent lists to represent result tuples in GenericJoin the trie is implicitly encoded by the structural sharing of the persistent lists[^5].
 
 We are going to use indexed Z-sets to represent our results when doing the variable based WCOJ join. Each level of the result trie are the results for one join variable. Paths to leaves represent prefixes. The weight at each leaf is the product of weights from all relations whose variables have been fully bound. Meaning only when the last variable of a relation is being joined the actual weight is being used in the join process (otherwise we use the multiplicative identity 1).

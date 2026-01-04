@@ -31,10 +31,10 @@ The entity id 1 for a person with the name "Ada Lovelace" were added to the data
 By efficient I mean that for most cases these changes can be calculated without reevaluating the whole query from scratch. The assumption always being that $\|\Delta DB\| \ll \|DB\|$. For many linear operators like `filter`, `map` and `project` this is $O(\|\Delta DB\|)$.  
 As the following example shows this bound doesn't hold in the triangle query case (for joins). A single edge deletion can trigger a $O(n)$ output changes.
 
-![triangle_ivm_problme_graph](assets/triangle_ivm_problme_graph.png)
+![triangle_ivm_problme_graph](/assets/triangle_ivm_problme_graph.png)
 The edge deletion of $(a,b)$ removes all triangles from the graph.
-We can do even worse (argh !). Consider the following graph 
-![wcoj_ivm_worst_case](assets/wcoj_ivm_worst_case.png)
+We can do even worse (argh !). Consider the following graph
+![wcoj_ivm_worst_case](/assets/wcoj_ivm_worst_case.png)
 from the beloved triangle query perspective.
 
 $$

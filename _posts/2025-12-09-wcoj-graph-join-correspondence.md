@@ -29,7 +29,7 @@ GROUP BY
 ORDER BY
     revenue DESC; 
 ```
-If we create a graph for this query where nodes represent join variables (in SQL these are just join conditions as the notion of a join variable does not really exist in SQL) and where edges represent relations (tables), we get the following diagram. Notice that this is a hypergraph as relations might participate in more than 2 joins.![tpch_query5_hypergraph 1](assets/tpch_query5_hypergraph 1.png)
+If we create a graph for this query where nodes represent join variables (in SQL these are just join conditions as the notion of a join variable does not really exist in SQL) and where edges represent relations (tables), we get the following diagram. Notice that this is a hypergraph as relations might participate in more than 2 joins.![tpch_query5_hypergraph 1](/assets/tpch_query5_hypergraph 1.png)
 There is a direct correspondence between graphs and joins. There are even whole database vendors who have made their data model [graphs](https://en.wikipedia.org/wiki/Graph_database). Albeit in most cases the underlying model is for standard graphs (binary edges). You can of course also go the other way around and model graphs in the relational model. 
 ```sql
 CREATE TABLE g(f INT, t INT);
@@ -51,7 +51,7 @@ $$Q(A,B,C) = R(A,B) \bowtie S(B,C) \bowtie T(C,A)$$
 
 and the corresponding hypergraph  (which is just a standard graph in this case)
 
-![triangle_query_graph](assets/triangle_query_graph.png)
+![triangle_query_graph](/assets/triangle_query_graph.png)
 
 I also want to have a look at the triangle query in [EDN Datalog](https://v1-docs.xtdb.com/language-reference/1.24.3/datalog-queries/) . It looks in my opinion a lot cleaner and anticipates some of the explanations coming in later posts. The systems of the variant of Datalog I am interested in store data as EAV (Entity - Attribute - Value) triples (also sometimes called Subject - Predicate - Object in other contexts) where facts are stored as entities with an attribute name and a value. So for example 
 ```clojure

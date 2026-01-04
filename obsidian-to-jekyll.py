@@ -45,12 +45,12 @@ def process_images(content, obsidian_path, assets_dir):
             print(f"  Warning: Image not found: {source_image}")
 
     # Convert Obsidian wikilinks to standard markdown with assets path
-    # ![[image.png]] -> ![image](assets/image.png)
+    # ![[image.png]] -> ![image](/assets/image.png)
     def replace_image(match):
         image_name = match.group(1)
         # Use filename without extension as alt text
         alt_text = Path(image_name).stem
-        return f'![{alt_text}](assets/{image_name})'
+        return f'![{alt_text}](/assets/{image_name})'
 
     content = re.sub(image_pattern, replace_image, content, flags=re.IGNORECASE)
 

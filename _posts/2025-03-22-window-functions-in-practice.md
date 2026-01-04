@@ -61,7 +61,7 @@ Theoretically, the hash-based approach is faster because sorting only needs to o
 
 Both approaches lend themselves well to parallelization. For the sort-based approach, a parallel sorting algorithm is sufficient. For parallel hash-partitioning each thread processes an independent chunk of the input data, creating hash groups for its chunk. Afterwards, the same hash groups from different chunks are combined into partitions. The sorting of these partitions can then be done independently for each chunk. If the partitions are large or heavily skewed, intra-partition parallelization via a parallel sort can be applied.
 
-![window_functions_partitioning+sorting](assets/window_functions_partitioning+sorting.excalidraw.png){: .center-image }
+![window_functions_partitioning+sorting](/assets/window_functions_partitioning+sorting.excalidraw.png){: .center-image }
 
 The above illustrates the different phases of the hash-based approach with two partitions and two threads.
 ### Framing
@@ -69,7 +69,7 @@ Once partitioning and sorting are complete, you can explore strategies of evalua
 
 Consider a running sum over `ROWS BETWEEN 5 PRECEDING AND 5 FOLLOWING` . Many database systems solve this with a removable cumulative approach. When the frame shifts the new element gets added to the aggregate and the element that has dropped of the frame gets removed.
 
-![cumulative_simple](assets/cumulative_simple.excalidraw.png){: .center-image }
+![cumulative_simple](/assets/cumulative_simple.excalidraw.png){: .center-image }
 
 This works well for `SUM` and `AVG`, resulting in a linear runtime. For a window like `RANGE BETWEEN INTERVAL '2 HOURS' PRECEDING AND INTERVAL '2 HOURS' FOLLOWING` with a non uniform distribution of the partition with respect to the order by part (e.g. many sales happening in the morning), it might result in many rows getting added and dropped when the window shifts. Nevertheless,  each row is only added and removed once from the window frame aggregation.
 
@@ -78,7 +78,7 @@ For `MIN` and `MAX` aggregates it's necessary to maintain an auxiliary ordered s
 For the lols, let us discard that constraint and assume windows of the form
 `SUM(b) OVER (ORDER BY a ROWS BETWEEN x PRECEDING AND y FOLLOWING` are allowed. When the frame shifts the aggregate can then change arbitrarily, meaning that the removable cumulative approach from the previous section will no longer help. To avoid reverting to a naive approach, segment trees come to the rescue. A segment tree stores the aggregate for a set of subranges and let's you query the aggregate for any range in logarithmic time.
 
-![sum_aggregate_segment](assets/sum_aggregate_segment.excalidraw.png){: .center-image }
+![sum_aggregate_segment](/assets/sum_aggregate_segment.excalidraw.png){: .center-image }
 
 In the example above the aggregated sum for frames 1 and 2 can be calculated by summing the blue and red circled nodes respectively. When calculating an aggregate with the segment tree one can either traverse the tree bottom-up, starting with the frame bounds, or top-down if the tree nodes also contain their respective range attached.
 

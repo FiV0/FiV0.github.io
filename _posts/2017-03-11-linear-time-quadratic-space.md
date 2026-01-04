@@ -21,7 +21,7 @@ For every edge $(i,j)$ we create a pointer to the entry
 $$M_{ij}$$ and $$M_{ij}$$ points to the edge $(i,j)$. This initialization can be done in linear time $(O(n+m))$.
 The process only makes sense if the number of edges is subquadratic.
 
-![Illustration](assets/edge-matrix.svg ){: .center-image }
+![Illustration](/assets/edge-matrix.svg ){: .center-image }
 
 If the algorithm wants to check if an edge exists it looks at the entry $M_{ij}$.
 If $$M_{ij}$$ points to some garbage the algorithm knows that the edge is non-existant.

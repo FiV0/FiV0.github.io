@@ -30,4 +30,4 @@ For every $S$ of the $m$ sets in $I$ we introduce a vertex $v_S$. For every elem
 
 Now every shortest $s-t$ path has length $k+1$ and visits exactly one element of each group. Every shortest $s-t$ therefore defines a set $H$ of at most k vertices. It is not hard to verify that $H$ is a hitting set for $I$ iff the corresponding path has eccentricity at most $k$. This completes the reduction.
 
-![Illustration of the reduction](assets/reduction-w2-large.svg )
+![Illustration of the reduction](/assets/reduction-w2-large.svg )
