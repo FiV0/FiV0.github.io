@@ -30,6 +30,7 @@ github:
 pages_list:
   About: '/about/'
   Archive: '/archive/'
+  RSS: '/feed.xml'
 
 # Allow URL Redirects:
 #  * https://help.github.com/articles/redirects-on-github-pages
