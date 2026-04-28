@@ -23,39 +23,38 @@ SlateDB is built with OLTP access patterns in mind and this translates directly 
 The architecture of Triplox for a 3 node setup then would roughly look as follows (subject to change):
 
 ```
-                     ┌─────────────────────────────────────────────────────────────┐
-                     │                   Object Storage (S3)                       │
-                     │                                                             │
-                     │  ┌─────────────┐      ┌─────────────┐      ┌─────────────┐  │
-                     │  │   SlateDB   │      │   SlateDB   │      │   SlateDB   │  │
-                     │  │  (Writer)   │      │  (Reader 1) │      │  (Reader 2) │  │
-                     │  └──────┬──────┘      └──────┬──────┘      └──────┬──────┘  │
-                     │         │                    │                    │         │
-                     └─────────┼────────────────────┼────────────────────┼─────────┘
-                               │                    │                    │
-       Queries/Indices         ▲ read/write         ▼ read               ▼ read
-                               │                    │                    │
-          ┌────────────────────┴────────┐  ┌────────┴────────┐  ┌────────┴───────┐
-          │         Writer Node         │  │  Reader Node 1  │  │  Reader Node 2 │
-          │                             │  │                 │  │                │
-          │      ┌──────────────┐       │  │                 │  │                │
-    ┌─────┼────▶│   Indexer    │       │  │                 │  │                │
-    │     │      └──────────────┘       │  │                 │  │                │
-    │     │                             │  │                 │  │                │
-    │     └─────────────┬───────────────┘  └─────────────────┘  └────────────────┘
-    │                   │
-    │  Transactions     │ write
-    │                   ▼
-    │     ┌──────────────────────────────────────────────────────────────────────┐
-    │     │                                                                      │
-    │     │                 Log (Kafka, S2, WAL3, etc.)                          │
-    │     │                                                                      │
-    │     │    ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┐                 │
-    └─────┼────┤ tx0 │ tx1 │ tx2 │ tx3 │ tx4 │ tx5 │ tx6 │ ... │                 │
-     read │    └─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┘                 │
-          │                                                                      │
-          └──────────────────────────────────────────────────────────────────────┘
-
+                   ┌─────────────────────────────────────────────────────────────┐
+                   │                   Object Storage (S3)                       │
+                   │                                                             │
+                   │  ┌─────────────┐      ┌─────────────┐      ┌─────────────┐  │
+                   │  │   SlateDB   │      │   SlateDB   │      │   SlateDB   │  │
+                   │  │  (Writer)   │      │  (Reader 1) │      │  (Reader 2) │  │
+                   │  └──────┬──────┘      └──────┬──────┘      └──────┬──────┘  │
+                   │         │                    │                    │         │
+                   └─────────┼────────────────────┼────────────────────┼─────────┘
+                             │                    │                    │
+     Queries/Indices         ▲ read/write         ▼ read               ▼ read
+                             │                    │                    │
+        ┌────────────────────┴────────┐  ┌────────┴────────┐  ┌────────┴───────┐
+        │         Writer Node         │  │  Reader Node 1  │  │  Reader Node 2 │
+        │                             │  │                 │  │                │
+        │      ┌──────────────┐       │  │                 │  │                │
+  ┌─────┼────▶│   Indexer    │       │  │                 │  │                │
+  │     │      └──────────────┘       │  │                 │  │                │
+  │     │                             │  │                 │  │                │
+  │     └─────────────┬───────────────┘  └─────────────────┘  └────────────────┘
+  │                   │
+  │  Transactions     │ write
+  │                   ▼
+  │     ┌──────────────────────────────────────────────────────────────────────┐
+  │     │                                                                      │
+  │     │                 Log (Kafka, S2, WAL3, etc.)                          │
+  │     │                                                                      │
+  │     │    ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┐                 │
+  └─────┼────┤ tx0 │ tx1 │ tx2 │ tx3 │ tx4 │ tx5 │ tx6 │ ... │                 │
+   read │    └─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┘                 │
+        │                                                                      │
+        └──────────────────────────────────────────────────────────────────────┘
 ```
 The main wrinkle here is currently the log. It adds extra complexity I would prefer to avoid. Using something like [AutoMQ](https://github.com/automq/automq), which is Kafka backed by S3, would create another service in the architecture.  Some kind of log component to which the writer node just appends data would be preferable.   I am not using SlateDB's [MVCC](https://en.wikipedia.org/wiki/Multiversion_concurrency_control) because Triplox needs to control the [total order](https://en.wikipedia.org/wiki/Total_order) of transactions before they hit the indexes, rather than having that order determined internally by SlateDB.
 Maybe something like [wal3](https://www.trychroma.com/engineering/wal3) would fit the bill, but it is currently not available as standalone dependency. We have also discussed creating a standalone slatedb-wal, extracting the wal component of SlateDB into a standalone dependency and simply use it as a log. So far this seems to be the best option to me, but I am happy to hear other ideas.
