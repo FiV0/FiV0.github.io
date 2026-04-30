@@ -6,6 +6,8 @@ redirect_from: "/2026/01/02/wcoj-dbsp-zsets-and-datalog/"
 permalink: wcoj-dbsp-zsets-and-datalog
 ---
 
+Edit(2026-04-30): There are some issues with the complexity claims below. I am working on some udates to the WCOJ series. Also see the edit at the top of [WCOJ - WCOJ meets DBSP](wcoj-wcoj-meets-dbsp).
+
 *Tying together DBSP and updates in a Datalog engine in preparation for a WCOJ for DBSP*
 
 The folks from [Feldera](https://www.feldera.com/) have written some good blog posts on [Z-sets](https://www.feldera.com/blog/z-sets-representing-database-changes) and [their](https://www.feldera.com/blog/implementing-z-sets) [implementation](https://www.feldera.com/blog/implementing-z-sets). Reading them will make what follows a lot easier (but it's hopefully not a requirement). I am also going to use some notation from their DBSP paper [^2].
@@ -33,7 +35,7 @@ As the following example shows this bound doesn't hold in the triangle query cas
 
 ![triangle_ivm_problme_graph](/assets/triangle_ivm_problme_graph.png)
 The edge deletion of $(a,b)$ removes all triangles from the graph.
-We can do even worse (argh !). Consider the following graph
+We can do even worse (argh !). Consider the following graph 
 ![wcoj_ivm_worst_case](/assets/wcoj_ivm_worst_case.png)
 from the beloved triangle query perspective.
 
@@ -168,7 +170,7 @@ $$
 $$
 
 with $\Delta_{1..i}$ being the result for the first $i$ deltas. You can obtain this formula by applying the standard join formula on $\Delta_{1..{i-1}}$  and $R_i^A$. 
-Going from $\Delta_{1..{i-1}}$ to $\Delta_{1..i}$ means joining the previous delta accumulation $\Delta_{1..i-1}$ with  the delta under consideration $\Delta R_i^A$ , the previous accumulation with the delayed relations $(R_i^A)^{-1}$ and the delta under consideration with all the delayed relations indexed by less than $i$. Notice that for $i=2$ this is the standard DBSP join formula. The left side of all three terms of the formula is a delta, meaning the joins at each iteration are bounded by  $O(\|\Delta DB\|\|DB\|)$, hence the the whole process is bounded by $O(\|\Delta DB\|\|DB\|)$ for fixed query. We will be use this join formula when implementing the variable join (similar to the `GenericSingleJoin` from the [second post in the series](wcoj-generic-join)) by level for a GenericJoin-like implementation in DBSP. 
+Going from $\Delta_{1..{i-1}}$ to $\Delta_{1..i}$ means joining the previous delta accumulation $\Delta_{1..i-1}$ with  the delta under consideration $\Delta R_i^A$ , the previous accumulation with the delayed relations $(R_i^A)^{-1}$ and the delta under consideration with all the delayed relations indexed by less than $i$. Notice that for $i=2$ this is the standard DBSP join formula. The left side of all three terms of the formula is a delta, meaning the joins at each iteration are bounded by  $O(\|\Delta DB\|\|DB\|)$, hence the the whole process is bounded by $O(\|\Delta DB\|\|DB\|)$ for a fixed query. We will be use this join formula when implementing the variable join (similar to the `GenericSingleJoin` from the [second post in the series](wcoj-generic-join)) by level for a GenericJoin-like implementation in DBSP. 
 ### Full database history in support of DBSP
 In DBSP you (sometimes) need to store state history for the DBSP circuits to work correctly. Looking at the join operator formula from above once more:
 

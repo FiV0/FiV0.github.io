@@ -6,6 +6,31 @@ redirect_from: "/2026/01/03/wcoj-wcoj-meets-dbsp/"
 permalink: wcoj-wcoj-meets-dbsp
 ---
 
+Edit(2026-04-30): After having thought some more about this post there a multiple issues. The algorithm is not correct and the claim about WCOJ needs to be more precise. There are multiple definitions for worst-case optimality in the context of IVM and I need to get them straight before actually claiming anything. The more serious issue is correctness. Let $P_{i}$ be the set of prefixes at level $i$ of the algorithm below and $E_{i}$ be the set of extensions, then 
+
+$$
+\Delta P_{i+1}
+=
+\operatorname{Extend}_i(\Delta P_i, E_i^{\mathrm{old}})
++
+\operatorname{Extend}_i(P_i^{\mathrm{old}}, \Delta E_i)
++
+\operatorname{Extend}_i(\Delta P_i, \Delta E_i)
+$$
+
+ 
+or in compact form
+
+$$
+\Delta P_{i+1}
+=
+\operatorname{Extend}_i(\Delta P_i, E_i^{\mathrm{new}})
++
+\operatorname{Extend}_i(P_i^{\mathrm{old}}, \Delta E_i)
+$$
+
+In my main loop below I am only considering $\Delta P_{i}$. I am working on an updated version.
+
 *Putting together almost everything from the series to create an efficient (complexity-wise) WCOJ algorithm for DBSP.*
 
 Some parts of this post have not been heavily scrutinised (by other people), so the content needs to be taken with a grain of salt. It wouldn't surprise me if something is not quite correct or could be simplified further. I will also abuse some notation a bit. I couldn't find any reference of combining [DBSP](https://arxiv.org/abs/2203.16684) with [WCOJ](https://en.wikipedia.org/wiki/Worst-case_optimal_join_algorithm) in the literature. The only reference that seems relevant is a paper of how to do incremental view maintenance (IVM - the general problem DBSP addresses) for the WCOJ algorithm Leapfrog-Triejoin [^1] and how to do WCOJs in the more powerful incremental computation framework differential dataflow[^2].
@@ -43,7 +68,7 @@ This ensures each relation's weight contributes exactly once to the final result
 ### Result representation as Indexed Z-Set's
 In the relational model result sets are often represented as lists of lists. For example consider the following result set of geo-data that becomes finer grained from left to right.
 ![flat_listing](/assets/flat_listing.png)
-In a trie representation (also used in factorized databases) the above would look as follows.
+In a trie representation (also used in factorized databases) the above would look as follows. 
 ![trie_view5](/assets/trie_view5.png)
 If `Country`, `City` and `District` were all join variables in a WCOJ join, this trie structure would be build up as we are joining. Leapfrog-Triejoin[^3] builds this structure in a DFS manner and GenericJoin[^4] walks this structure in BFS manner (probably good content for another post). When one extends one prefix with extensions in [GenericJoin](wcoj-generic-join), it essentially means extending a subtree by one level. For example for the prefix `(Germany, Berlin)` one would create new prefixes `(Germany, Berlin, Mitte)` and `(Germany, Berlin, Kreuzberg)`. When using persistent lists to represent result tuples in GenericJoin the trie is implicitly encoded by the structural sharing of the persistent lists[^5].
 

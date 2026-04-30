@@ -317,21 +317,32 @@ def create_jekyll_post(obsidian_file_path, custom_date=None, hidden=False):
     # Use the filename without extension as title
     title = obsidian_path.stem
 
-    # Use provided date or current date
-    post_date = custom_date if custom_date else datetime.now()
-    date_str = post_date.strftime('%Y-%m-%d')
-    date_path = post_date.strftime('%Y/%m/%d')
-
     # Create slug from title
     slug = slugify(title)
-
-    # Create filename
-    filename = f"{date_str}-{slug}.md"
 
     # Get the script directory and construct posts directory path
     script_dir = Path(__file__).parent
     posts_dir = script_dir / '_posts'
     assets_dir = script_dir / 'assets'
+
+    # If a post with this slug already exists, reuse its filename/date
+    # so we overwrite in place rather than creating a duplicate.
+    existing_post = next(
+        (p for p in posts_dir.glob(f'*-{slug}.md')
+         if re.match(r'^\d{4}-\d{2}-\d{2}-' + re.escape(slug) + r'\.md$', p.name)),
+        None,
+    )
+
+    if existing_post is not None:
+        date_str = existing_post.name[:10]
+        date_path = date_str.replace('-', '/')
+        filename = existing_post.name
+    else:
+        post_date = custom_date if custom_date else datetime.now()
+        date_str = post_date.strftime('%Y-%m-%d')
+        date_path = post_date.strftime('%Y/%m/%d')
+        filename = f"{date_str}-{slug}.md"
+
     output_path = posts_dir / filename
 
     # Process images: copy to assets and update paths
