@@ -6,9 +6,11 @@ redirect_from: "/2025/12/15/wcoj-datalog-and-genericjoin/"
 permalink: wcoj-datalog-and-genericjoin
 ---
 
+Edit(07-06-2026): I have realized that the `OrPrefixExtender` below is not quite right, as variable instantiations from other `or` branches can "leak" into extensions in lower variable levels. Or branches need to get executed in isolation, at least for the variables they participate in. The other option is to check the branch again when it gets extended for a particular prefix, but that seems expensive. 
+
 *See how easy it is to extend the GenericJoin interface `PrefixExtender` for `or`, `and`and`not`*
 
-Recapping from our [last post](wcoj-generic-join), the interface implemented for a data pattern clause backed by one of the indexes  (some permutation of an EAV index) is
+Recapping from [our last post](wcoj-generic-join), the interface implemented for a data pattern clause backed by one of the indexes  (some permutation of an EAV index) is
 ```kotlin
 interface PrefixExtender : LevelParticipation {
     fun count(prefix: Prefix): Int
@@ -91,7 +93,7 @@ open class GenericAndPrefixExtender(val children: List<PrefixExtender>) : Prefix
     override fun participatesInLevel(level: Int) = children.any { it.participatesInLevel(level) }
 }
 ```
-In the `and` extender we are almost doing the same logic as in the `GenericSingleJoin` code from the previous post which makes sense as conjunction is implicit at the top-level of `:where`. An upper bound for the `count` is the smallest `count` of one of its children. In `propose` and `intersect` we assure that we start the intersection from the smallest (in size) child, similarly to the general`GenericJoin` to guarantee worst-case optimality.
+In the `and` extender we are almost doing the same logic as in the `GenericSingleJoin` code from the [previous post](wcoj-generic-join) which makes sense as conjunction is implicit at the top-level of `:where`. An upper bound for the `count` is the smallest `count` of one of its children. In `propose` and `intersect` we assure that we start the intersection from the smallest (in size) child, similarly to the general`GenericJoin` to guarantee worst-case optimality.
 ### Not
 The `not` clause is the [anti-join](https://en.wikipedia.org/wiki/Join_(relational_algebra)#Antijoin) of Datalog. You can use it to remove tuples that match the positive part of the query.
 ```clojure
@@ -133,7 +135,7 @@ Note that this is quite a naive implementation of an anti-join. In the inner `Ge
 
 Complexity-wise all these 3 implementations are doing work that is bound by the size of the query (the number of sub-clauses in `or`, `and` and `not`respectively ) which can be considered constant for a fixed query. The work done at the bottom, actual triple clauses, is then by courtesy of the previous post, worst-case optimal. 
 
-Up next we will do a little detour into [DBSP](https://arxiv.org/abs/2203.16684), an incremental computation framework, that efficiently incrementalizes all fundamental operators in relational algebra. This will then set us up for our final boss post where DBSP meets WCOJ.
+Up [next](wcoj-dbsp-zsets-and-datalog) we will do a little detour into [DBSP](https://arxiv.org/abs/2203.16684), an incremental computation framework, that efficiently incrementalizes all fundamental operators in relational algebra. This will then set us up for our final boss post where DBSP meets WCOJ.
 
 ### Appendix
 
