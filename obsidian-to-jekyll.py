@@ -18,6 +18,7 @@ def process_images(content, obsidian_path, assets_dir):
     Find image references, copy images to assets, and update paths.
 
     Handles Obsidian's wikilink image syntax: ![[image_name.png]]
+    A size option (![[x.png|1200]]) is dropped; a text option becomes the alt text.
 
     Args:
         content: The markdown content
@@ -28,8 +29,8 @@ def process_images(content, obsidian_path, assets_dir):
         Updated content with corrected image paths
     """
     # Find all Obsidian wikilink image references like ![[image_name.png]]
-    image_pattern = r'!\[\[([^\]]+\.(?:png|jpg|jpeg|gif|svg|webp))\]\]'
-    matches = re.findall(image_pattern, content, re.IGNORECASE)
+    image_pattern = r'!\[\[([^\]|]+\.(?:png|jpg|jpeg|gif|svg|webp))(?:\|([^\]]*))?\]\]'
+    matches = [m[0] for m in re.findall(image_pattern, content, re.IGNORECASE)]
 
     source_images_dir = obsidian_path.parent / 'images'
     copied_images = []
@@ -48,8 +49,10 @@ def process_images(content, obsidian_path, assets_dir):
     # ![[image.png]] -> ![image](/assets/image.png)
     def replace_image(match):
         image_name = match.group(1)
-        # Use filename without extension as alt text
-        alt_text = Path(image_name).stem
+        # Use a text option as alt text, else the filename without extension
+        option = (match.group(2) or '').strip()
+        is_size = re.fullmatch(r'\d+(?:x\d+)?', option)
+        alt_text = option if option and not is_size else Path(image_name).stem
         return f'![{alt_text}](/assets/{image_name})'
 
     content = re.sub(image_pattern, replace_image, content, flags=re.IGNORECASE)
@@ -276,6 +279,14 @@ def transform_display_math(content):
     return content
 
 
+def expand_code_tabs(content, tab_size=4):
+    """Expand tabs in fenced code blocks to Obsidian's default width; browsers use 8."""
+    def expand(match):
+        return match.group(0).expandtabs(tab_size)
+
+    return re.sub(r'```[^\n]*\n.*?```', expand, content, flags=re.DOTALL)
+
+
 def slugify(text):
     """Convert text to a URL-friendly slug."""
     # Convert to lowercase
@@ -356,6 +367,9 @@ def create_jekyll_post(obsidian_file_path, custom_date=None, hidden=False):
 
     # Transform display math to be on its own lines
     content = transform_display_math(content)
+
+    # Expand tabs in code blocks to Obsidian's tab width
+    content = expand_code_tabs(content)
 
     # Create Jekyll front matter
     hidden_line = "hidden: true\n" if hidden else ""
